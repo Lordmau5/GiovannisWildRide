@@ -7,8 +7,10 @@ import org.newdawn.slick.Renderable;
  */
 public interface Entity {
 
+    public boolean canPassThrough(Entity entity);
+
     public Renderable getRenderer();
 
-    public float[] getPosition();
+    public int[] getRelativePosition();
 
 }

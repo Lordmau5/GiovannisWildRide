@@ -6,8 +6,8 @@ package main.java.com.lordmau5.util;
 public enum Direction {
 
     UP,
+    RIGHT,
     DOWN,
-    LEFT,
-    RIGHT
+    LEFT
 
 }

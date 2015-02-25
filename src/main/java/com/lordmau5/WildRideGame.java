@@ -3,6 +3,7 @@ package main.java.com.lordmau5;
 import main.java.com.lordmau5.entity.Entity;
 import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
+import main.java.com.lordmau5.world.Map;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class WildRideGame extends BasicGame {
     private List<Entity> drawnEntities = new ArrayList<>();
 
     private Player player;
+    private Map map;
 
     public WildRideGame() {
         super("Giovanni's Wild Ride!");
@@ -30,28 +32,31 @@ public class WildRideGame extends BasicGame {
 
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
+        map = new Map();
+
         player = new Player();
         drawnEntities.add(player);
 
         music = new Music("music.ogg");
         fastMusic = new Music("music.ogg");
-        music.loop(1.0F, 0.1F);
+        //music.loop(1.0F, 0.1F);
+
+        player.setMap(map);
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         movement(gameContainer, delta);
+        player.update();
         otherInput(gameContainer, delta);
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        for(Entity ent : drawnEntities) {
-            if(ent.getRenderer() != null) {
-                float[] pos = ent.getPosition();
-                ent.getRenderer().draw(pos[0], pos[1]);
-            }
-        }
+        map.render(gameContainer, graphics);
+
+        int[] pos = player.getRelativePosition();
+        player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
     }
 
     //-----------------------------------------------------------------------------------------
@@ -59,27 +64,41 @@ public class WildRideGame extends BasicGame {
     void movement(GameContainer container, int delta) {
         Input input = container.getInput();
 
+        Direction dr = null;
+
         if(input.isKeyDown(Input.KEY_UP)) {
-            player.move(Direction.UP, delta);
+            dr = Direction.UP;
         }
         else if(input.isKeyDown(Input.KEY_DOWN)) {
-            player.move(Direction.DOWN, delta);
+            dr = Direction.DOWN;
         }
         else if(input.isKeyDown(Input.KEY_LEFT)) {
-            player.move(Direction.LEFT, delta);
+            dr = Direction.LEFT;
         }
         else if(input.isKeyDown(Input.KEY_RIGHT)) {
-            player.move(Direction.RIGHT, delta);
+            dr = Direction.RIGHT;
         }
-        else {
-            player.stopMoving();
+
+        if(dr == null) {
+            player.holdingMove = false;
+            return;
         }
+
+        player.holdingMove = true;
+
+        if(player.isMoving())
+            return;
+
+        player.move(dr, delta);
     }
 
     void otherInput(GameContainer container, int delta) {
         Input input = container.getInput();
 
         if(input.isKeyPressed(Input.KEY_P)) {
+            if(!music.playing() && !fastMusic.playing())
+                return;
+
             if(fastMode) {
                 if(!canWork)
                     return;
@@ -115,6 +134,19 @@ public class WildRideGame extends BasicGame {
                     }
                 }, 0, 20);
             }
+        }
+        else if(input.isKeyPressed(Input.KEY_M)) {
+            if(fastMode)
+                if(fastMusic.playing())
+                    fastMusic.pause();
+                else
+                    fastMusic.pause();
+            else
+                if(music.playing())
+                    music.pause();
+                else
+                    music.pause();
+
         }
     }
 }
