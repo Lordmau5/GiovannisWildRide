@@ -24,6 +24,7 @@ public class Main {
             appGame.setVSync(true);
             appGame.setUpdateOnlyWhenVisible(true);
             appGame.setAlwaysRender(true);
+            appGame.setVerbose(false);
             appGame.start();
 
         } catch (SlickException e) {

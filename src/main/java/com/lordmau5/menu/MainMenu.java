@@ -62,13 +62,11 @@ public class MainMenu extends AbstractMenu {
         if (button.getText().equals("Exit")) {
             System.exit(0);
         } else if (button.getText().equals("Play")) {
-            // TODO: Show Level List
-
             Main.game.setMenu(new LevelList());
         } else if (button.getText().equals("Level Editor")) {
             // TODO: Show Level Editor
         } else if (button.getText().equals("Options")) {
-
+            // TODO: Show Options?
         }
     }
 

@@ -11,6 +11,8 @@ import org.newdawn.slick.Graphics;
  */
 public class LevelList extends AbstractMenu {
 
+    // TODO: Draw Levels and make them clickable (loadable)
+
     public LevelList() {
         addCenteredButton(700, "Back");
     }
