@@ -10,7 +10,7 @@ public class ImageLoader {
 
     public static Image loadImage(String location) {
         try {
-            return new Image(location);
+            return new Image(location, false, Image.FILTER_NEAREST);
         } catch (SlickException e) {
             e.printStackTrace();
         }

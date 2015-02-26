@@ -16,15 +16,39 @@ public class Wall extends WorldTile {
     private int type;
     private List<Image> tiles = new ArrayList<>();
 
-    public Wall(int x, int y, int type) {
+    public Wall(int x, int y) {
         super(x, y);
-
-        this.type = type;
 
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tiles/wall.png"), 32, 32);
         for(int iY=0; iY<3; iY++) // Rows
             for(int iX=0; iX<5; iX++) // Images in Row
                 tiles.add(sheet.getSprite(iX, iY));
+    }
+
+    public Wall(int x, int y, int type) {
+        this(x, y);
+
+        this.type = type;
+    }
+
+    public void setType(int type) {
+        if(type < 0 || type >= tiles.size())
+            type = 0;
+        this.type = type;
+    }
+
+    @Override
+    public String getSaveString() {
+        return super.getSaveString() + "," + getType();
+    }
+
+    @Override
+    public void initiate(String[] variables) {
+        setType(Integer.parseInt(variables[3]));
+    }
+
+    public int getType() {
+        return type;
     }
 
     @Override

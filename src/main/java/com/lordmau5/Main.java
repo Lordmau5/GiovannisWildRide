@@ -8,20 +8,23 @@ import org.newdawn.slick.SlickException;
  */
 public class Main {
 
+    public static WildRideGame game;
+
     public static void main(String[] args) {
         initGLStuff();
     }
 
     public static void initGLStuff() {
-        AppGameContainer game;
+        AppGameContainer appGame;
         try {
-            game = new AppGameContainer(new WildRideGame());
-            game.setDisplayMode(800, 600, false);
-            game.setShowFPS(false);
-            game.setVSync(true);
-            game.setUpdateOnlyWhenVisible(true);
-            game.setAlwaysRender(true);
-            game.start();
+            game = new WildRideGame();
+            appGame = new AppGameContainer(game);
+            appGame.setDisplayMode(1024, 768, false);
+            appGame.setShowFPS(false);
+            appGame.setVSync(true);
+            appGame.setUpdateOnlyWhenVisible(true);
+            appGame.setAlwaysRender(true);
+            appGame.start();
 
         } catch (SlickException e) {
             e.printStackTrace();

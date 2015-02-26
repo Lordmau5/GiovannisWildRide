@@ -1,9 +1,11 @@
 package main.java.com.lordmau5;
 
-import main.java.com.lordmau5.entity.Entity;
 import main.java.com.lordmau5.entity.Player;
-import main.java.com.lordmau5.util.Direction;
-import main.java.com.lordmau5.world.Map;
+import main.java.com.lordmau5.menu.AbstractMenu;
+import main.java.com.lordmau5.menu.MainMenu;
+import main.java.com.lordmau5.util.*;
+import main.java.com.lordmau5.world.Level;
+import main.java.com.lordmau5.world.tiles.*;
 import org.newdawn.slick.*;
 
 import java.util.ArrayList;
@@ -16,10 +18,13 @@ import java.util.TimerTask;
  */
 public class WildRideGame extends BasicGame {
 
-    private List<Entity> drawnEntities = new ArrayList<>();
+    private List<Level> levels = new ArrayList<>();
 
+    private AbstractMenu menu;
     private Player player;
-    private Map map;
+    private Level level;
+
+    private Mode mode = Mode.MENU;
 
     public WildRideGame() {
         super("Giovanni's Wild Ride!");
@@ -30,33 +35,122 @@ public class WildRideGame extends BasicGame {
     boolean fastMode;
     boolean canWork = true;
 
+    private void registerTiles() {
+        TileRegistry.registerTile(Floor.class);
+        TileRegistry.registerTile(Spin.class);
+        TileRegistry.registerTile(SpinStop.class);
+        TileRegistry.registerTile(Wall.class);
+    }
+
+    public void setMenu(AbstractMenu menu) {
+        this.menu = menu;
+    }
+
+    private void saveDemoMap() {
+        level = new Level();
+
+        level.setStartPoint(4, 4);
+        level.setEndPoint(1, 1);
+
+        for(int x=0; x<32; x++)
+            for(int y=0;y<24;y++) {
+                level.replaceTileAt(x, y, Floor.class);
+            }
+
+        level.setWall(0, 0, 10);
+        for(int y=1; y<24; y++)
+            level.setWall(0, y, 11);
+        for(int x=1; x<32; x++)
+            level.setWall(x, 0, 13);
+
+        level.setSpin(4, 15, Direction.DOWN);
+        level.setSpin(4, 16, Direction.RIGHT);
+        level.setSpin(6, 16, Direction.DOWN);
+        level.setSpin(6, 17, Direction.LEFT);
+        level.setSpin(5, 17, Direction.UP);
+
+        level.replaceTileAt(5, 15, SpinStop.class);
+
+        LevelLoader.saveLevel(level, "testMap1");
+    }
+
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
-        map = new Map();
+        registerTiles();
 
         player = new Player();
-        drawnEntities.add(player);
 
-        music = new Music("music.ogg");
-        fastMusic = new Music("music.ogg");
-        //music.loop(1.0F, 0.1F);
+        levels = GenericUtil.getLevels();
 
-        player.setMap(map);
+        Level level = new Level();
+
+        //saveDemoMap();
+        //map = MapLoader.loadMap("testMap1");
+        player.setLevel(level);
+
+        setMenu(new MainMenu(false));
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
-        movement(gameContainer, delta);
-        player.update();
-        otherInput(gameContainer, delta);
+        if(mode == Mode.GAME) {
+            movement(gameContainer, delta);
+            player.update();
+            otherInput(gameContainer, delta);
+        }
+    }
+
+    @Override
+    public void mousePressed(int button, int x, int y) {
+        if(mode == Mode.MENU) {
+            menu.onMousePress(button, x, y, true);
+        }
+    }
+
+    @Override
+    public void mouseReleased(int button, int x, int y) {
+        if(mode == Mode.MENU) {
+            menu.onMousePress(button, x, y, false);
+        }
+
+        if(mode != Mode.EDITOR)
+            return;
+
+        x = (int) Math.floor(x / 32);
+        y = (int) Math.floor(y / 32);
+
+        WorldTile tile = level.getWorldTileAt(x, y);
+        if(tile != null) {
+            if(tile instanceof Spin) {
+                Spin spin = (Spin) tile;
+                int type = spin.getDirection().ordinal() + 1;
+                if(type >= Direction.values().length)
+                    type = 0;
+
+
+                spin.setDirection(Direction.values()[type]);
+            }
+        }
+    }
+
+    @Override
+    public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+        super.mouseMoved(oldx, oldy, newx, newy);
+
+        menu.onMouseMove(newx, newy);
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        map.render(gameContainer, graphics);
+        if(mode == Mode.GAME) {
+            level.render(gameContainer, graphics);
 
-        int[] pos = player.getRelativePosition();
-        player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
+            int[] pos = player.getRelativePosition();
+            player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
+        }
+        else if(mode == Mode.MENU) {
+            menu.render(gameContainer, graphics);
+        }
     }
 
     //-----------------------------------------------------------------------------------------
@@ -96,9 +190,6 @@ public class WildRideGame extends BasicGame {
         Input input = container.getInput();
 
         if(input.isKeyPressed(Input.KEY_P)) {
-            if(!music.playing() && !fastMusic.playing())
-                return;
-
             if(fastMode) {
                 if(!canWork)
                     return;

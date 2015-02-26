@@ -5,8 +5,8 @@ package main.java.com.lordmau5.world;
  */
 public class Tile {
 
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -26,15 +26,15 @@ public class Tile {
         return new int[]{this.x * 2, this.y * 2};
     }
 
-    /*@Override
+    public Tile copyTile() {
+        return new Tile(x, y);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Tile))
             return false;
         Tile oTile = (Tile) obj;
-        return oTile.x == this.x && oTile.y == this.y;
-    }*/
-
-    public boolean positionEquals(Tile oTile) {
         return oTile.x == this.x && oTile.y == this.y;
     }
 }

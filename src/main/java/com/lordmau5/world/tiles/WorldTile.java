@@ -33,6 +33,14 @@ public class WorldTile extends Tile implements Entity {
         return new int[]{pos[0] * 16, pos[1] * 16};
     }
 
+    public void initiate(String[] variables) {
+
+    }
+
+    public String getSaveString() {
+         return x + "," + y + "," + getClass().getSimpleName();
+    }
+
     public void onCollide(Entity entity) {
 
     }
