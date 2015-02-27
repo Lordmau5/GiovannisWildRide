@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class LevelpackList extends AbstractMenu {
 
-    // TODO: Draw Levels and make them clickable (loadable)
-
     private List<LevelPack> levelPacks;
     private int modifier = 0;
     private int selected = -1;
@@ -167,11 +165,11 @@ public class LevelpackList extends AbstractMenu {
 
     }
 
-    public void addButton(int x, int y, String text) {
+    public void addButton(float x, float y, String text) {
         buttons.add(new ClickableText(x, y, text));
     }
 
-    public void addImageButton(String id, int x, int y, int w, int h, String imagePath) {
+    public void addImageButton(String id, float x, float y, int w, int h, String imagePath) {
         buttons.add(new ImageButton(id, x, y, w, h, imagePath));
     }
 

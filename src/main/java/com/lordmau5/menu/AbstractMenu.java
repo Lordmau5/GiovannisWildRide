@@ -27,6 +27,8 @@ public abstract class AbstractMenu {
         }
     }
 
+    public void init(GameContainer gameContainer) {}
+
     public abstract void render(GameContainer gameContainer, Graphics graphics);
 
     public abstract void update(GameContainer gameContainer, int delta);

@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class LevelPack {
 
-    // TODO: Create it?
     private String name;
     private List<Level> levels = new ArrayList<>();
 

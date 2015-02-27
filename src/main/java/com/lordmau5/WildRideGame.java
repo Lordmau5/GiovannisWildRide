@@ -28,10 +28,7 @@ public class WildRideGame extends BasicGame {
         super("Giovanni's Wild Ride!");
     }
 
-    Music music;
-    Music fastMusic;
-    boolean fastMode;
-    boolean canWork = true;
+    private GameContainer gameContainer;
     public boolean levelsLoading = true;
     LevelpackLoader loader;
 
@@ -44,6 +41,7 @@ public class WildRideGame extends BasicGame {
 
     public void setMenu(AbstractMenu menu) {
         this.menu = menu;
+        menu.init(gameContainer);
     }
 
     private void saveDemoLVLPack(int max, int lvls) {
@@ -84,6 +82,8 @@ public class WildRideGame extends BasicGame {
         registerTiles();
         new Player(null);
         new Font();
+
+        this.gameContainer = gameContainer;
 
         loader = new LevelpackLoader();
 

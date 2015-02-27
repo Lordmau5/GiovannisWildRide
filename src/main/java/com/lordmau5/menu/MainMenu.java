@@ -60,13 +60,13 @@ public class MainMenu extends AbstractMenu {
         if(button == null)
             return;
 
-        if (button.getText().equals("Exit")) {
+        if (button.getIdentifier().equals("Exit")) {
             System.exit(0);
-        } else if (button.getText().equals("Play")) {
+        } else if (button.getIdentifier().equals("Play")) {
             Main.game.setMenu(new LevelpackList());
-        } else if (button.getText().equals("Level Editor")) {
-            // TODO: Show Level Editor
-        } else if (button.getText().equals("Options")) {
+        } else if (button.getIdentifier().equals("Level Editor")) {
+            Main.game.setMenu(new LevelEditorMenu());
+        } else if (button.getIdentifier().equals("Options")) {
             // TODO: Show Options?
         }
     }

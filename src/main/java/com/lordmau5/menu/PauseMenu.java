@@ -32,7 +32,7 @@ public class PauseMenu extends AbstractMenu {
             return;
 
         if(button.getIdentifier().equals("Exit Level")) {
-            Main.game.setMenu(new MainMenu(true));
+            Main.game.setMenu(new LevelpackList());
         }
     }
 
