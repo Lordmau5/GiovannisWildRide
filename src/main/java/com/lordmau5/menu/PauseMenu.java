@@ -18,7 +18,7 @@ public class PauseMenu extends AbstractMenu {
     public PauseMenu(GameMenu gameMenu) {
         this.gameMenu = gameMenu;
 
-        addButton(Font.getCenteredStartX("Exit Level", 1f), 650, "Exit Level");
+        addCenteredGreyButton(650, "Exit Level", 1f);
     }
 
     @Override

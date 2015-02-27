@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class LevelLoader {
 
+    public static boolean doesLevelPackExist(String path) {
+        System.out.println(path);
+        return new File(path).exists();
+    }
+
     public static LevelPack loadLevelPack(String path) {
         List<Level> levels = new ArrayList<>();
 
@@ -51,6 +56,9 @@ public class LevelLoader {
                 levels.add(level);
             }
             else {
+                if(line.isEmpty())
+                    continue;
+
                 String[] split = line.split(";");
                 for (String xString : split) {
                     String[] oSplit = xString.split(",");

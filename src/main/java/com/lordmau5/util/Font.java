@@ -25,4 +25,12 @@ public class Font {
         return 1024 / 2 / scale - width / 2;
     }
 
+    private static String specialChars = "?/&!)(][;|:,~._-";
+    public static boolean isSpecialChar(char c) {
+        for(char xC : specialChars.toCharArray())
+            if(xC == c)
+                return true;
+        return false;
+    }
+
 }

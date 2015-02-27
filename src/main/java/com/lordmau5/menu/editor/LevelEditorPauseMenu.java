@@ -16,6 +16,7 @@ import org.newdawn.slick.Input;
 public class LevelEditorPauseMenu extends AbstractMenu {
 
     public final LevelEditorMenu levelEditorMenu;
+    private int levelSaveInt;
 
     public LevelEditorPauseMenu(LevelEditorMenu levelEditorMenu) {
         this.levelEditorMenu = levelEditorMenu;
@@ -38,6 +39,19 @@ public class LevelEditorPauseMenu extends AbstractMenu {
 
         if(button.getIdentifier().equals("Set Level Name"))
             Main.game.setMenu(new LevelEditorSetLevelName(this, levelEditorMenu.getCurrentLevel().getLevelName()));
+        if(button.getIdentifier().equals("Switch to previous Level")) {
+            if(levelEditorMenu.getCurrentLevelId() > 1)
+                levelEditorMenu.switchLevel(levelEditorMenu.getCurrentLevelId() - 1);
+        }
+        if(button.getIdentifier().equals("Switch to next Level")) {
+            levelEditorMenu.switchLevel(levelEditorMenu.getCurrentLevelId() + 1);
+        }
+        if(button.getIdentifier().equals("Save Levelpack")) {
+            boolean isSaved = levelEditorMenu.saveLevelpack();
+            if(!isSaved) {
+                levelSaveInt = 200;
+            }
+        }
         if(button.getIdentifier().equals("Exit Editing"))
             Main.game.setMenu(new PreLevelEditorMenu());
     }
@@ -70,6 +84,17 @@ public class LevelEditorPauseMenu extends AbstractMenu {
         graphics.fillRect(x - 10, 230, tWidth + 20, 50);
         Font.getFont().drawString(Font.getCenteredStartX(levelName, 2 / 3f), 240, levelName);
         graphics.scale(3 / 2f, 3 / 2f);
+
+        if(levelSaveInt > 0) {
+            graphics.scale(2 / 3f, 2 / 3f);
+            String errorText = "One or more levels are corrupted!";
+            tWidth = Font.getFont().getWidth(errorText);
+            x = Font.getCenteredStartX(errorText, 2 / 3f);
+            graphics.fillRect(x - 10, 710, tWidth + 20, 50);
+            Font.getFont().drawString(Font.getCenteredStartX(errorText, 2 / 3f), 720, errorText, Color.red);
+            graphics.scale(3 / 2f, 3 / 2f);
+            levelSaveInt--;
+        }
 
         for(IButton button : buttons)
             button.render(graphics);

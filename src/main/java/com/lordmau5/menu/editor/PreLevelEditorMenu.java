@@ -53,7 +53,7 @@ public class PreLevelEditorMenu extends AbstractMenu {
                 if(levelName.length() == 32)
                     return;
 
-                if(/*Character.isAlphabetic(c) || */ Character.isDefined(c))
+                if(Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || Font.isSpecialChar(c))
                     levelName = new StringBuilder(levelName).append(c).toString();
             }
 
