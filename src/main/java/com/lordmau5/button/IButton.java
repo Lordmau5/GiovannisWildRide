@@ -9,9 +9,15 @@ public interface IButton {
 
     public int[] getPosition();
 
+    public int getWidth();
+
+    public int getHeight();
+
     public Color getColor();
 
     public String getText();
+
+    public String getIdentifier();
 
     public void onHover(boolean isHover);
 

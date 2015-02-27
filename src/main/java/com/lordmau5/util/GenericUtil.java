@@ -1,8 +1,10 @@
 package main.java.com.lordmau5.util;
 
-import main.java.com.lordmau5.world.Level;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import main.java.com.lordmau5.world.level.LevelPack;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +13,17 @@ import java.util.List;
  */
 public class GenericUtil {
 
-    public static List<Level> getLevels() {
-        List<File> levelFiles = new ArrayList<>();
-        listf("levels", levelFiles, ".level");
+    public static List<LevelPack> getLevelPacks() {
+        List<File> levelpackFiles = new ArrayList<>();
+        listf("levels", levelpackFiles, "lvlPack");
 
-        List<Level> levels = new ArrayList<>();
-        for(File file : levelFiles) {
-            levels.add(LevelLoader.loadLevel(file.getAbsolutePath()));
+        List<LevelPack> levelPacks = new ArrayList<>();
+        for(File file : levelpackFiles) {
+            LevelPack pack = LevelLoader.loadLevelPack(file.getAbsolutePath());
+            if(!levelPacks.contains(pack))
+                levelPacks.add(pack);
         }
-        return levels;
+        return levelPacks;
     }
 
     public static void listf(String directoryName, List<File> files, String ext) {
@@ -36,6 +40,24 @@ public class GenericUtil {
                 listf(file.getAbsolutePath(), files, ext);
             }
         }
+    }
+
+    public static String encrypt(String string) {
+        try {
+            return Base64.encode(string.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String decrypt(String string) {
+        try {
+            return new String(Base64.decode(string), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

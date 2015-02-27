@@ -1,8 +1,9 @@
-package main.java.com.lordmau5.world;
+package main.java.com.lordmau5.world.level;
 
 import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.TileRegistry;
+import main.java.com.lordmau5.world.Tile;
 import main.java.com.lordmau5.world.tiles.Spin;
 import main.java.com.lordmau5.world.tiles.Wall;
 import main.java.com.lordmau5.world.tiles.WorldTile;
@@ -21,6 +22,18 @@ public class Level {
     private List<WorldTile> worldTiles = new ArrayList<>();
     private Tile startPoint;
     private Tile endPoint;
+
+    public Level(String levelName) {
+        this.levelName = levelName;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Level))
+            return false;
+        Level oLevel = (Level) obj;
+        return oLevel.getLevelName().equals(getLevelName());
+    }
 
     public void setLevelName(String levelName) { this.levelName = levelName; }
     public String getLevelName() { return levelName; }
@@ -53,7 +66,8 @@ public class Level {
         Tile location = new Tile(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
         WorldTile newTile = TileRegistry.createInstance(location, split[2]);
         newTile.initiate(split);
-        replaceTileAt(location.x, location.y, newTile);
+        int[] pos = location.getAbsolutePosition();
+        replaceTileAt(pos[0], pos[1], newTile);
     }
 
     public void replaceTileAt(int x, int y, WorldTile newTile) {

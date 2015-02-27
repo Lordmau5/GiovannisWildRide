@@ -4,7 +4,8 @@ import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.menu.MainMenu;
 import main.java.com.lordmau5.util.*;
-import main.java.com.lordmau5.world.Level;
+import main.java.com.lordmau5.world.level.Level;
+import main.java.com.lordmau5.world.level.LevelPack;
 import main.java.com.lordmau5.world.tiles.*;
 import org.newdawn.slick.*;
 
@@ -18,7 +19,7 @@ import java.util.TimerTask;
  */
 public class WildRideGame extends BasicGame {
 
-    private List<Level> levels = new ArrayList<>();
+    public List<LevelPack> levelPacks = new ArrayList<>();
 
     private AbstractMenu menu;
     private Player player;
@@ -46,32 +47,37 @@ public class WildRideGame extends BasicGame {
         this.menu = menu;
     }
 
-    private void saveDemoMap() {
-        level = new Level();
+    private void saveDemoLVLPack() {
+        for(int j=1; j<=20; j++) {
+            List<Level> levels = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                Level level = new Level("Level" + i);
 
-        level.setStartPoint(4, 4);
-        level.setEndPoint(1, 1);
+                level.setStartPoint(4, 4);
+                level.setEndPoint(1, 1);
 
-        for(int x=0; x<32; x++)
-            for(int y=0;y<24;y++) {
-                level.replaceTileAt(x, y, Floor.class);
+                for (int x = 0; x < 32; x++)
+                    for (int y = 0; y < 24; y++) {
+                        level.replaceTileAt(x, y, Floor.class);
+                    }
+
+                level.setWall(0, 0, 10);
+                for (int y = 1; y < 24; y++)
+                    level.setWall(0, y, 11);
+                for (int x = 1; x < 32; x++)
+                    level.setWall(x, 0, 13);
+
+                level.setSpin(4, 15, Direction.DOWN);
+                level.setSpin(4, 16, Direction.RIGHT);
+                level.setSpin(6, 16, Direction.DOWN);
+                level.setSpin(6, 17, Direction.LEFT);
+                level.setSpin(5, 17, Direction.UP);
+
+                level.replaceTileAt(5, 15, SpinStop.class);
+                levels.add(level);
             }
-
-        level.setWall(0, 0, 10);
-        for(int y=1; y<24; y++)
-            level.setWall(0, y, 11);
-        for(int x=1; x<32; x++)
-            level.setWall(x, 0, 13);
-
-        level.setSpin(4, 15, Direction.DOWN);
-        level.setSpin(4, 16, Direction.RIGHT);
-        level.setSpin(6, 16, Direction.DOWN);
-        level.setSpin(6, 17, Direction.LEFT);
-        level.setSpin(5, 17, Direction.UP);
-
-        level.replaceTileAt(5, 15, SpinStop.class);
-
-        LevelLoader.saveLevel(level, "testMap1");
+            LevelLoader.saveLevelPack(new LevelPack("LevelPack " + j, levels), "levels/LvlPack_" + j + ".lvlPack");
+        }
     }
 
     @Override
@@ -80,13 +86,13 @@ public class WildRideGame extends BasicGame {
 
         player = new Player();
 
-        levels = GenericUtil.getLevels();
+        levelPacks = GenericUtil.getLevelPacks();
 
-        Level level = new Level();
+        //Level level = new Level("Demo");
 
-        //saveDemoMap();
-        //map = MapLoader.loadMap("testMap1");
-        player.setLevel(level);
+        //saveDemoLVLPack();
+        //LevelPack pack = LevelLoader.loadLevelPack("levels/LvlPack1.lvlpack");
+        //player.setLevel(level);
 
         setMenu(new MainMenu(false));
     }

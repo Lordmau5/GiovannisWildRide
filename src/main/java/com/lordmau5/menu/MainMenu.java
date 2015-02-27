@@ -44,7 +44,7 @@ public class MainMenu extends AbstractMenu {
     }
 
     public void addCenteredButton(int y, String text) {
-        buttons.add(new ClickableText(1024 / 2 - font.getWidth(text) / 2, y, text));
+        buttons.add(new ClickableText(1024 / 2 - font.getWidth(text) / 2, y, text, font));
     }
 
     public void onMouseMove(int x, int y) {

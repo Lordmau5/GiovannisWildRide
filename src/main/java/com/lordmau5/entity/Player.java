@@ -2,7 +2,7 @@ package main.java.com.lordmau5.entity;
 
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.ImageLoader;
-import main.java.com.lordmau5.world.Level;
+import main.java.com.lordmau5.world.level.Level;
 import main.java.com.lordmau5.world.Tile;
 import main.java.com.lordmau5.world.tiles.WorldTile;
 import org.newdawn.slick.Animation;
