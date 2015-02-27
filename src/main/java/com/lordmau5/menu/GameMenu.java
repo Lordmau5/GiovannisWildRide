@@ -37,7 +37,9 @@ public class GameMenu extends AbstractMenu {
     }
 
     public void resetLevel() {
-        this.level = levelPack.resetLevel(currentLevelId);
+        for(WorldTile tile : level.getWorldTiles())
+            tile.resetState();
+
         player.setLevel(level);
     }
 

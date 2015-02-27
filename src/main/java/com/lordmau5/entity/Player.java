@@ -15,7 +15,7 @@ public class Player implements Entity {
 
     private int x, y;
     public Tile tile;
-    private Tile lastSpinTile;
+    private Tile lastTile;
     private Tile walkTile;
 
     private Level level;
@@ -143,6 +143,7 @@ public class Player implements Entity {
             x = pos[0] * 32;
             y = pos[1] * 32;
 
+            this.lastTile = this.tile.copyTile();
             this.tile.setPosition(pos[0], pos[1]);
             if(this.tile.equals(level.getEndPoint())) {
                 gameMenu.nextLevel();
@@ -174,6 +175,7 @@ public class Player implements Entity {
             x = pos[0] * 32;
             y = pos[1] * 32;
 
+            this.lastTile = this.tile.copyTile();
             this.tile.setPosition(pos[0], pos[1]);
             if(this.tile.equals(level.getEndPoint())) {
                 gameMenu.nextLevel();
@@ -218,10 +220,10 @@ public class Player implements Entity {
         if(spinning && direction == spinDirection)
             return;
 
-        if(this.lastSpinTile != null && tile.equals(this.lastSpinTile))
+        if(this.lastTile != null && tile.equals(this.lastTile))
             return;
 
-        this.lastSpinTile = tile.copyTile();
+        this.lastTile = tile.copyTile();
 
         spinDirection = direction;
         if(!spinning) {
