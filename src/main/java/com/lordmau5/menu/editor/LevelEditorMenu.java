@@ -2,15 +2,16 @@ package main.java.com.lordmau5.menu.editor;
 
 import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.menu.AbstractMenu;
-import main.java.com.lordmau5.world.Tile;
+import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.tiles.Floor;
 import main.java.com.lordmau5.world.tiles.WorldTile;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Lordmau5 on 27.02.2015.
@@ -18,14 +19,21 @@ import java.util.Map;
 public class LevelEditorMenu extends AbstractMenu {
 
     private final String levelpackName;
-    private Map<Tile, WorldTile> positionSet = new HashMap<>();
+    private List<WorldTile> tilePositions = new ArrayList<>();
+    private List<WorldTile> tileMap;
+    private int selected = 0;
+    private boolean menuShowing = true;
+    private boolean menuRight = true;
+
+    private Input input;
 
     public LevelEditorMenu(String levelpackName) {
         this.levelpackName = levelpackName;
+        this.tileMap = TileRegistry.getTileMap();
 
         for(int x=0; x<32; x++)
             for(int y=0; y<24; y++) {
-                positionSet.put(new Tile(x, y), new Floor(x, y));
+                tilePositions.add(new Floor(x, y));
             }
     }
 
@@ -34,10 +42,135 @@ public class LevelEditorMenu extends AbstractMenu {
     }
 
     @Override
+    public void init(GameContainer gameContainer) {
+        super.init(gameContainer);
+
+        input = gameContainer.getInput();
+    }
+
+    private boolean isInsideTileSelection(int x, int y) {
+        if(!menuShowing)
+            return false;
+
+        int startX = menuRight ? Main.width - 170 : 10;
+        if(x >= startX && x <= startX + 160) {
+            return true;
+        }
+        return false;
+    }
+
+    private void handleTileSelection(int x, int y) {
+        if(!menuShowing)
+            return;
+
+        int startX = menuRight ? Main.width - 170 : 10;
+        if(x >= startX && x <= startX + 160) {
+            int rowCount = (int) Math.ceil(tileMap.size() / 5);
+            if(rowCount % 5 > 0)
+                rowCount++;
+
+            if(y >= 10 && y <= rowCount * 32 + 10) {
+                x -= startX;
+                y -= 10;
+                int column = (int) Math.floor(x / 32);
+                int row = (int) Math.floor(y / 32);
+
+                selected = column + row * 5;
+                if(selected >= tileMap.size())
+                    selected = -1;
+            }
+        }
+    }
+
+    @Override
+    public void onMouseDragged(int x, int y) {
+        super.onMouseDragged(x, y);
+
+        if(!isInsideTileSelection(x, y)) {
+            int tileX = (int) Math.floor(x / 32);
+            int tileY = (int) Math.floor(y / 32);
+
+            System.out.println(tileX + " - " + tileY);
+            WorldTile worldTile = tileMap.get(selected).copyTile();
+            worldTile.setPosition(tileX, tileY);
+            for(WorldTile tile : tilePositions) {
+                int[] pos = tile.getAbsolutePosition();
+                if(pos[0] == tileX && pos[1] == tileY) {
+                    tilePositions.remove(tile);
+                    break;
+                }
+            }
+            tilePositions.add(worldTile);
+        }
+    }
+
+    @Override
+    public void onMousePress(int buttonId, int x, int y, boolean press) {
+        super.onMousePress(buttonId, x, y, press);
+
+        if(!press)
+            return;
+
+        if(buttonId == 1) {
+            if(input.isKeyDown(Input.KEY_LSHIFT))
+                menuRight = !menuRight;
+            else
+                menuShowing = !menuShowing;
+            return;
+        }
+
+        if(buttonId == 2) {
+            selected = -1;
+            return;
+        }
+
+        handleTileSelection(x, y);
+
+        if(!isInsideTileSelection(x, y)) {
+            int tileX = (int) Math.floor(x / 32);
+            int tileY = (int) Math.floor(y / 32);
+
+            System.out.println(tileX + " - " + tileY);
+            WorldTile worldTile = tileMap.get(selected).copyTile();
+            worldTile.setPosition(tileX, tileY);
+            for(WorldTile tile : tilePositions) {
+                int[] pos = tile.getAbsolutePosition();
+                if(pos[0] == tileX && pos[1] == tileY) {
+                    tilePositions.remove(tile);
+                    break;
+                }
+            }
+            tilePositions.add(worldTile);
+        }
+    }
+
+    @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        for(Map.Entry<Tile, WorldTile> entry : positionSet.entrySet()) {
-            int[] pos = entry.getValue().getRelativePosition();
-            entry.getValue().getImage().draw(pos[0], pos[1]);
+        for(WorldTile tile : tilePositions) {
+            int[] pos = tile.getRelativePosition();
+            tile.getImage().draw(pos[0], pos[1]);
+        }
+
+        if(menuShowing) {
+            int menuX = menuRight ? Main.width - 180 : 0;
+            graphics.setColor(new Color(1f, 1f, 1f, 0.75f));
+            graphics.fillRect(menuX, 0, 180, Main.height);
+
+            int height = (int) Math.ceil(tileMap.size() / 5);
+            if (tileMap.size() % 5 > 0)
+                height += 1;
+            for (int x = 0; x < 5; x++) {
+                for (int y = 0; y < height; y++) {
+                    if ((y * 5) + x >= tileMap.size())
+                        break;
+
+                    Color color = Color.white;
+                    if ((y * 5) + x == selected) {
+                        color = Color.green; //new Color(1f, 0.8f, 1f, 1f);
+                    }
+                    graphics.drawImage(tileMap.get((y * 5) + x).getImage(), menuX + 10 + x * 32, y * 32 + 10, color);
+                }
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package main.java.com.lordmau5.world.tiles;
 
 import main.java.com.lordmau5.entity.Entity;
+import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.Tile;
 import main.java.com.lordmau5.world.tiles.state.InitialState;
 import org.newdawn.slick.Image;
@@ -24,6 +25,10 @@ public class WorldTile extends Tile implements Entity {
         if(getRenderer() instanceof Image)
             return (Image) getRenderer();
         return null;
+    }
+
+    public WorldTile copyTile() {
+        return TileRegistry.createInstance(new Tile(x, y), getClass().getSimpleName());
     }
 
     @Override

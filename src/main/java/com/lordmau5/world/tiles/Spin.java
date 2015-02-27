@@ -34,6 +34,13 @@ public class Spin extends WorldTile {
     }
 
     @Override
+    public WorldTile copyTile() {
+        Spin spin = (Spin) super.copyTile();
+        spin.setDirection(direction);
+        return spin;
+    }
+
+    @Override
     public void resetState() {
         super.resetState();
 

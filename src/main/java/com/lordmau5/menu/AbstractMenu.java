@@ -35,6 +35,10 @@ public abstract class AbstractMenu {
         }
     }
 
+    public void onMouseClicked(int buttonId, int x, int y, int clickCount) {}
+
+    public void onMouseDragged(int newx, int newy) {}
+
     public void init(GameContainer gameContainer) {}
 
     public abstract void render(GameContainer gameContainer, Graphics graphics);

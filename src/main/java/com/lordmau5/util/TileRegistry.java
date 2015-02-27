@@ -1,10 +1,12 @@
 package main.java.com.lordmau5.util;
 
 import main.java.com.lordmau5.world.Tile;
-import main.java.com.lordmau5.world.tiles.WorldTile;
+import main.java.com.lordmau5.world.tiles.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +15,21 @@ import java.util.Map;
 public class TileRegistry {
 
     private static Map<String, Class<? extends WorldTile>> tileMap = new HashMap<>();
+    private static List<WorldTile> tileVariations = new ArrayList<>();
+
+    public static List<WorldTile> getTileMap() {
+        return tileVariations;
+    }
+
+    public static void registerTileVariations() {
+        tileVariations.add(new Floor(0, 0));
+        for(int i=0; i<Wall.getWallAmount(); i++)
+            tileVariations.add(new Wall(0, 0, i));
+
+        for(Direction dr : Direction.values())
+            tileVariations.add(new Spin(0, 0, dr));
+        tileVariations.add(new SpinStop(0, 0));
+    }
 
     public static void registerTile(Class<? extends WorldTile> tClass) {
         String tileName = tClass.getSimpleName();

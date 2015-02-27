@@ -8,10 +8,7 @@ import main.java.com.lordmau5.menu.editor.PreLevelEditorMenu;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.Font;
 import main.java.com.lordmau5.world.tiles.Spin;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
 
 /**
  * Created by Lordmau5 on 26.02.2015.
@@ -113,7 +110,15 @@ public class MainMenu extends AbstractMenu {
 
     @Override
     public void update(GameContainer gameContainer, int delta) {
+        Input input = gameContainer.getInput();
 
+        if(input.isKeyPressed(Input.KEY_ESCAPE) && colorScale < 1f) {
+            scale = 3f;
+            introY = 100;
+            introX = 490;
+            colorScale = 1f;
+            spinUpAlpha = 0f;
+        }
     }
 
 }
