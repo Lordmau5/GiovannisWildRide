@@ -1,9 +1,9 @@
 package main.java.com.lordmau5.menu.editor;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.ClickableTextGrey;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.menu.AbstractMenu;
+import main.java.com.lordmau5.menu.editor.sub.LevelEditorSetLevelName;
 import main.java.com.lordmau5.util.Font;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -15,18 +15,29 @@ import org.newdawn.slick.Input;
  */
 public class LevelEditorPauseMenu extends AbstractMenu {
 
-    private final LevelEditorMenu levelEditorMenu;
+    public final LevelEditorMenu levelEditorMenu;
 
     public LevelEditorPauseMenu(LevelEditorMenu levelEditorMenu) {
         this.levelEditorMenu = levelEditorMenu;
 
-        addCenteredButton(650, "Exit Editing", 1f);
+        addCenteredGreyButton(250, "Set Level Name", 1f);
+        addCenteredGreyButton(350, "Switch to previous Level", 1f);
+        addCenteredGreyButton(420, "Switch to next Level", 1f);
+        addCenteredGreyButton(570, "Save Levelpack", 1f);
+        addCenteredGreyButton(650, "Exit Editing", 1f);
+    }
+
+    public void updateLevelName(String levelName) {
+        if(!levelName.isEmpty())
+            levelEditorMenu.getCurrentLevel().setLevelName(levelName);
     }
 
     @Override
     public void onButtonLeftclick(IButton button) {
         super.onButtonLeftclick(button);
 
+        if(button.getIdentifier().equals("Set Level Name"))
+            Main.game.setMenu(new LevelEditorSetLevelName(this, levelEditorMenu.getCurrentLevel().getLevelName()));
         if(button.getIdentifier().equals("Exit Editing"))
             Main.game.setMenu(new PreLevelEditorMenu());
     }
@@ -45,11 +56,19 @@ public class LevelEditorPauseMenu extends AbstractMenu {
         Font.getFont().drawString(Font.getCenteredStartX("Pause", 3 / 2f), 40, "Pause");
         graphics.scale(2 / 3f, 2 / 3f);
         graphics.scale(2 / 3f, 2 / 3f);
-        tWidth = Font.getFont().getWidth(levelEditorMenu.getLevelpackName());
-        float startingX = Font.getCenteredStartX(levelEditorMenu.getLevelpackName(), 2 / 3f);
-        x = startingX;
+        String levelPackName = "Levelpack: " + levelEditorMenu.getLevelpackName();
+        tWidth = Font.getFont().getWidth(levelPackName);
+        x = Font.getCenteredStartX(levelPackName, 2 / 3f);
         graphics.fillRect(x - 10, 180, tWidth + 20, 50);
-        Font.getFont().drawString(Font.getCenteredStartX(levelEditorMenu.getLevelpackName(), 2 / 3f), 190, levelEditorMenu.getLevelpackName());
+        Font.getFont().drawString(Font.getCenteredStartX(levelPackName, 2 / 3f), 190, levelPackName);
+        graphics.scale(3 / 2f, 3 / 2f);
+
+        graphics.scale(2 / 3f, 2 / 3f);
+        String levelName = "Level (" + levelEditorMenu.getCurrentLevelId() + "/" + levelEditorMenu.getLevels() + "): " + levelEditorMenu.getCurrentLevel().getLevelName();
+        tWidth = Font.getFont().getWidth(levelName);
+        x = Font.getCenteredStartX(levelName, 2 / 3f);
+        graphics.fillRect(x - 10, 230, tWidth + 20, 50);
+        Font.getFont().drawString(Font.getCenteredStartX(levelName, 2 / 3f), 240, levelName);
         graphics.scale(3 / 2f, 3 / 2f);
 
         for(IButton button : buttons)
@@ -63,10 +82,6 @@ public class LevelEditorPauseMenu extends AbstractMenu {
         if(input.isKeyPressed(Input.KEY_ESCAPE)) {
             Main.game.setMenu(levelEditorMenu);
         }
-    }
-
-    public void addCenteredButton(int y, String text, float scale) {
-        buttons.add(new ClickableTextGrey(Font.getCenteredStartX(text, scale), y, text));
     }
 
 }
