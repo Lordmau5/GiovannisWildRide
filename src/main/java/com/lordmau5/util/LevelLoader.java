@@ -15,7 +15,6 @@ import java.util.List;
 public class LevelLoader {
 
     public static boolean doesLevelPackExist(String path) {
-        System.out.println(path);
         return new File(path).exists();
     }
 

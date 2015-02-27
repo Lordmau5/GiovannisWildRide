@@ -67,7 +67,6 @@ public class LevelpackList extends AbstractMenu {
             int levelPackId = getMouseOverLevelPackId();
             if(levelPackId == -1)
                 return;
-            System.out.println("LevelPack ID: " + levelPackId);
             selected = levelPackId;
             movingX = 0;
             return;

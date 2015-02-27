@@ -41,7 +41,6 @@ public class LevelEditorMenu extends AbstractMenu {
         this.tileMap = TileRegistry.getTileMap();
 
         if(LevelLoader.doesLevelPackExist("levels/" + levelpackName + ".lvlPack")) {
-            System.out.println("Exists");
             this.levelPack = LevelLoader.loadLevelPack("levels/" + levelpackName + ".lvlPack");
             this.levelpackName = this.levelPack.getName();
             this.currentLevel = this.levelPack.getFirstLevel();
