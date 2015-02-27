@@ -1,11 +1,8 @@
 package main.java.com.lordmau5.menu;
 
 import main.java.com.lordmau5.button.IButton;
-import main.java.com.lordmau5.util.ImageLoader;
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +12,7 @@ import java.util.List;
  */
 public abstract class AbstractMenu {
 
-    public AngelCodeFont font;
     public List<IButton> buttons = new ArrayList<>();
-
-    public AbstractMenu() {
-        try {
-            font = new AngelCodeFont("font/font.fnt", ImageLoader.loadImage("font/font.png"));
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-    }
 
     public abstract void onMousePress(int buttonId, int x, int y, boolean press);
 

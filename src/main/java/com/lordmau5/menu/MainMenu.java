@@ -5,6 +5,7 @@ import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
+import main.java.com.lordmau5.util.Font;
 import main.java.com.lordmau5.world.tiles.Spin;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -44,7 +45,7 @@ public class MainMenu extends AbstractMenu {
     }
 
     public void addCenteredButton(int y, String text) {
-        buttons.add(new ClickableText(1024 / 2 - font.getWidth(text) / 2, y, text, font));
+        buttons.add(new ClickableText(1024 / 2 - Font.getFont().getWidth(text) / 2, y, text, Font.getFont()));
     }
 
     public void onMouseMove(int x, int y) {
@@ -62,7 +63,7 @@ public class MainMenu extends AbstractMenu {
         if (button.getText().equals("Exit")) {
             System.exit(0);
         } else if (button.getText().equals("Play")) {
-            Main.game.setMenu(new LevelList());
+            Main.game.setMenu(new LevelpackList());
         } else if (button.getText().equals("Level Editor")) {
             // TODO: Show Level Editor
         } else if (button.getText().equals("Options")) {
@@ -92,14 +93,14 @@ public class MainMenu extends AbstractMenu {
                 graphics.scale(1 / scale * 2, 1 / scale * 2);
                 if(colorScale <= 1f)
                     colorScale += 0.05f;
-                font.drawString(font.getWidth(text) / 2 / scale, 5, text, new Color(1f, 1f, 1f, colorScale));
+                Font.getFont().drawString(Font.getFont().getWidth(text) / 2 / scale, 5, text, new Color(1f, 1f, 1f, colorScale));
 
                 graphics.scale(0.5f, 0.5f);
                 for(IButton button : buttons) {
                     int[] pos = button.getPosition();
                     Color color = button.getColor();
                     color.a = colorScale;
-                    font.drawString(pos[0], pos[1], button.getText(), color);
+                    Font.getFont().drawString(pos[0], pos[1], button.getText(), color);
                 }
             }
         }

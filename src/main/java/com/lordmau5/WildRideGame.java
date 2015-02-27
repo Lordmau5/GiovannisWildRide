@@ -4,6 +4,7 @@ import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.menu.MainMenu;
 import main.java.com.lordmau5.util.*;
+import main.java.com.lordmau5.util.Font;
 import main.java.com.lordmau5.world.level.Level;
 import main.java.com.lordmau5.world.level.LevelPack;
 import main.java.com.lordmau5.world.tiles.*;
@@ -25,7 +26,7 @@ public class WildRideGame extends BasicGame {
     private Player player;
     private Level level;
 
-    private Mode mode = Mode.MENU;
+    private Mode mode = null;
 
     public WildRideGame() {
         super("Giovanni's Wild Ride!");
@@ -35,6 +36,8 @@ public class WildRideGame extends BasicGame {
     Music fastMusic;
     boolean fastMode;
     boolean canWork = true;
+    public boolean levelsLoading = true;
+    LevelpackLoader loader;
 
     private void registerTiles() {
         TileRegistry.registerTile(Floor.class);
@@ -83,26 +86,62 @@ public class WildRideGame extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         registerTiles();
-
         player = new Player();
+        new Font();
 
-        levelPacks = GenericUtil.getLevelPacks();
+        loader = new LevelpackLoader();
+
+        //levelPacks = GenericUtil.getLevelPacks();
 
         //Level level = new Level("Demo");
 
         //saveDemoLVLPack();
         //LevelPack pack = LevelLoader.loadLevelPack("levels/LvlPack1.lvlpack");
         //player.setLevel(level);
-
-        setMenu(new MainMenu(false));
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) throws SlickException {
+        if(levelsLoading) {
+            LevelPack pack = loader.getNextLevelpack();
+            levelPacks.add(pack);
+            if(loader.getRemaining() == 0) {
+                levelsLoading = false;
+                setMenu(new MainMenu(false));
+                mode = Mode.MENU;
+            }
+            return;
+        }
+
         if(mode == Mode.GAME) {
             movement(gameContainer, delta);
             player.update();
             otherInput(gameContainer, delta);
+        }
+    }
+
+    @Override
+    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
+        if(levelsLoading) {
+            String loading = "Loading...";
+            graphics.scale(2f, 2f);
+            int width = Font.getFont().getWidth(loading);
+            Font.getFont().drawString(width - width / 8, 150, loading, Color.white);
+            graphics.setColor(Color.cyan);
+            graphics.drawRect(100, 200, 300, 20);
+            width = 300 / loader.getTotal();
+            graphics.fillRect(100, 200, width * (loader.getTotal() - loader.getRemaining()), 20);
+            return;
+        }
+
+        if(mode == Mode.GAME) {
+            level.render(gameContainer, graphics);
+
+            int[] pos = player.getRelativePosition();
+            player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
+        }
+        else if(mode == Mode.MENU) {
+            menu.render(gameContainer, graphics);
         }
     }
 
@@ -143,20 +182,8 @@ public class WildRideGame extends BasicGame {
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         super.mouseMoved(oldx, oldy, newx, newy);
 
-        menu.onMouseMove(newx, newy);
-    }
-
-    @Override
-    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        if(mode == Mode.GAME) {
-            level.render(gameContainer, graphics);
-
-            int[] pos = player.getRelativePosition();
-            player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
-        }
-        else if(mode == Mode.MENU) {
-            menu.render(gameContainer, graphics);
-        }
+        if(menu != null)
+            menu.onMouseMove(newx, newy);
     }
 
     //-----------------------------------------------------------------------------------------

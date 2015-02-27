@@ -4,6 +4,7 @@ import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.button.ImageButton;
+import main.java.com.lordmau5.util.Font;
 import main.java.com.lordmau5.world.level.LevelPack;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Lordmau5 on 26.02.2015.
  */
-public class LevelList extends AbstractMenu {
+public class LevelpackList extends AbstractMenu {
 
     // TODO: Draw Levels and make them clickable (loadable)
 
@@ -23,7 +24,7 @@ public class LevelList extends AbstractMenu {
 
     private int mouseOverX, mouseOverY;
 
-    public LevelList() {
+    public LevelpackList() {
         levelPacks = Main.game.levelPacks;
 
         addCenteredButton(700, "Back");
@@ -94,7 +95,7 @@ public class LevelList extends AbstractMenu {
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
         graphics.scale(3 / 2f, 3 / 2f);
-        font.drawString(font.getWidth("Levelpacks"), 20, "Levelpacks");
+        Font.getFont().drawString(Font.getFont().getWidth("Levelpacks"), 20, "Levelpacks");
         graphics.scale(2 / 3f, 2 / 3f);
 
         graphics.setColor(new Color(1f, 1f, 1f, 0.5f));
@@ -109,13 +110,13 @@ public class LevelList extends AbstractMenu {
 
             color.a = 1f;
             graphics.setColor(color);
-            font.drawString(512 - font.getWidth(pack.getName()) / 2, 120 + (i - modifier) * 60, pack.getName());
+            Font.getFont().drawString(512 - Font.getFont().getWidth(pack.getName()) / 2, 120 + (i - modifier) * 60, pack.getName());
         }
 
         for(IButton button : buttons) {
             int[] pos = button.getPosition();
             if(button.getText() != null)
-                font.drawString(pos[0], pos[1], button.getText(), button.getColor());
+                Font.getFont().drawString(pos[0], pos[1], button.getText(), button.getColor());
 
             if(button instanceof ImageButton) {
                 ImageButton iButton = (ImageButton) button;
@@ -125,7 +126,7 @@ public class LevelList extends AbstractMenu {
     }
 
     public void addCenteredButton(int y, String text) {
-        buttons.add(new ClickableText(1024 / 2 - font.getWidth(text) / 2, y, text, font));
+        buttons.add(new ClickableText(1024 / 2 - Font.getFont().getWidth(text) / 2, y, text, Font.getFont()));
     }
 
     public void addImageButton(String id, int x, int y, int w, int h, String imagePath) {
