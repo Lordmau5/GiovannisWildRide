@@ -22,6 +22,9 @@ public class TileRegistry {
     }
 
     public static void registerTileVariations() {
+        tileVariations.add(new StartEndPoint(0, 0, true));
+        tileVariations.add(new StartEndPoint(0, 0, false));
+
         tileVariations.add(new Floor(0, 0));
         for(int i=0; i<Wall.getWallAmount(); i++)
             tileVariations.add(new Wall(0, 0, i));

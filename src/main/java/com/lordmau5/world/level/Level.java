@@ -4,10 +4,7 @@ import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.Tile;
-import main.java.com.lordmau5.world.tiles.Floor;
-import main.java.com.lordmau5.world.tiles.Spin;
-import main.java.com.lordmau5.world.tiles.Wall;
-import main.java.com.lordmau5.world.tiles.WorldTile;
+import main.java.com.lordmau5.world.tiles.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -22,8 +19,8 @@ public class Level {
 
     private String levelName;
     private List<WorldTile> worldTiles = new ArrayList<>();
-    private Tile startPoint;
-    private Tile endPoint;
+    private StartEndPoint startPoint;
+    private StartEndPoint endPoint;
 
     public Level(String levelName) {
         this.levelName = levelName;
@@ -45,15 +42,15 @@ public class Level {
     public void setLevelName(String levelName) { this.levelName = levelName; }
     public String getLevelName() { return levelName; }
 
-    public Tile getStartPoint() { return startPoint; }
-    public Tile getEndPoint() { return endPoint; }
+    public StartEndPoint getStartPoint() { return startPoint; }
+    public StartEndPoint getEndPoint() { return endPoint; }
 
     public void setStartPoint(int x, int y) {
-        startPoint = new Tile(x, y);
+        startPoint = new StartEndPoint(x, y, true);
     }
 
     public void setEndPoint(int x, int y) {
-        endPoint = new Tile(x, y);
+        endPoint = new StartEndPoint(x, y, false);
     }
 
     public Level getCopy() {

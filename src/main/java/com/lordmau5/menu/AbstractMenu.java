@@ -37,7 +37,7 @@ public abstract class AbstractMenu {
 
     public void onMouseClicked(int buttonId, int x, int y, int clickCount) {}
 
-    public void onMouseDragged(int newx, int newy) {}
+    public void onMouseDragged(int newx, int newy, int lastMouseButton) {}
 
     public void init(GameContainer gameContainer) {}
 

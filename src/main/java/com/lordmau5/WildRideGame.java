@@ -37,6 +37,7 @@ public class WildRideGame extends BasicGame {
         TileRegistry.registerTile(Spin.class);
         TileRegistry.registerTile(SpinStop.class);
         TileRegistry.registerTile(Wall.class);
+        TileRegistry.registerTile(StartEndPoint.class);
 
         TileRegistry.registerTileVariations();
     }
@@ -133,8 +134,12 @@ public class WildRideGame extends BasicGame {
             menu.render(gameContainer, graphics);
     }
 
+    private int lastMouseButton;
+
     @Override
     public void mousePressed(int button, int x, int y) {
+        lastMouseButton = button;
+
         if(mode == Mode.MENU) {
             menu.onMousePress(button, x, y, true);
         }
@@ -188,7 +193,7 @@ public class WildRideGame extends BasicGame {
         super.mouseDragged(oldx, oldy, newx, newy);
 
         if(menu != null)
-            menu.onMouseDragged(newx, newy);
+            menu.onMouseDragged(newx, newy, lastMouseButton);
     }
 
     //-----------------------------------------------------------------------------------------

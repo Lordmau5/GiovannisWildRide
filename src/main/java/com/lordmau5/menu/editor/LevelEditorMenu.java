@@ -4,11 +4,9 @@ import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.tiles.Floor;
+import main.java.com.lordmau5.world.tiles.StartEndPoint;
 import main.java.com.lordmau5.world.tiles.WorldTile;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
+import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,14 +81,19 @@ public class LevelEditorMenu extends AbstractMenu {
     }
 
     @Override
-    public void onMouseDragged(int x, int y) {
-        super.onMouseDragged(x, y);
+    public void onMouseDragged(int x, int y, int lastMouseButton) {
+        super.onMouseDragged(x, y, lastMouseButton);
+
+        if(lastMouseButton != 0)
+            return;
 
         if(!isInsideTileSelection(x, y)) {
             int tileX = (int) Math.floor(x / 32);
             int tileY = (int) Math.floor(y / 32);
 
-            System.out.println(tileX + " - " + tileY);
+            if(selected == -1)
+                return;
+
             WorldTile worldTile = tileMap.get(selected).copyTile();
             worldTile.setPosition(tileX, tileY);
             for(WorldTile tile : tilePositions) {
@@ -99,6 +102,19 @@ public class LevelEditorMenu extends AbstractMenu {
                     tilePositions.remove(tile);
                     break;
                 }
+            }
+            if(worldTile instanceof StartEndPoint) {
+                for(WorldTile tile : tilePositions)
+                    if(tile instanceof StartEndPoint) {
+                        StartEndPoint pt = (StartEndPoint) tile;
+                        if(pt.isStart() != ((StartEndPoint) worldTile).isStart())
+                            continue;
+
+                        int[] pos = tile.getAbsolutePosition();
+                        tilePositions.remove(tile);
+                        tilePositions.add(new Floor(pos[0], pos[1]));
+                        break;
+                    }
             }
             tilePositions.add(worldTile);
         }
@@ -119,10 +135,12 @@ public class LevelEditorMenu extends AbstractMenu {
             return;
         }
 
-        if(buttonId == 2) {
-            selected = -1;
+        if(isInsideTileSelection(x, y))
+            if(buttonId == 2)
+                selected = -1;
+
+        if(buttonId == 2)
             return;
-        }
 
         handleTileSelection(x, y);
 
@@ -130,7 +148,9 @@ public class LevelEditorMenu extends AbstractMenu {
             int tileX = (int) Math.floor(x / 32);
             int tileY = (int) Math.floor(y / 32);
 
-            System.out.println(tileX + " - " + tileY);
+            if(selected == -1)
+                return;
+
             WorldTile worldTile = tileMap.get(selected).copyTile();
             worldTile.setPosition(tileX, tileY);
             for(WorldTile tile : tilePositions) {
@@ -140,6 +160,19 @@ public class LevelEditorMenu extends AbstractMenu {
                     break;
                 }
             }
+            if(worldTile instanceof StartEndPoint) {
+                for(WorldTile tile : tilePositions)
+                    if(tile instanceof StartEndPoint) {
+                        StartEndPoint pt = (StartEndPoint) tile;
+                        if(pt.isStart() != ((StartEndPoint) worldTile).isStart())
+                            continue;
+
+                        int[] pos = tile.getAbsolutePosition();
+                        tilePositions.remove(tile);
+                        tilePositions.add(new Floor(pos[0], pos[1]));
+                        break;
+                    }
+            }
             tilePositions.add(worldTile);
         }
     }
@@ -147,8 +180,12 @@ public class LevelEditorMenu extends AbstractMenu {
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
         for(WorldTile tile : tilePositions) {
+            if(tile == null || tile.getRenderer() == null)
+                continue;
+
             int[] pos = tile.getRelativePosition();
-            tile.getImage().draw(pos[0], pos[1]);
+            Renderable renderer = tile.getImage(); //tile instanceof StartEndPoint ? tile.getRenderer() : tile.getImage();
+            renderer.draw(pos[0], pos[1]);
         }
 
         if(menuShowing) {
