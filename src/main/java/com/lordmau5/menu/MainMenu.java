@@ -65,7 +65,7 @@ public class MainMenu extends AbstractMenu {
         } else if (button.getIdentifier().equals("Play")) {
             Main.game.setMenu(new LevelpackList());
         } else if (button.getIdentifier().equals("Level Editor")) {
-            Main.game.setMenu(new LevelEditorMenu());
+            Main.game.setMenu(new PreLevelEditorMenu());
         } else if (button.getIdentifier().equals("Options")) {
             // TODO: Show Options?
         }
