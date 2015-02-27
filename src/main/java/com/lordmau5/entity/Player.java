@@ -1,14 +1,12 @@
 package main.java.com.lordmau5.entity;
 
+import main.java.com.lordmau5.menu.GameMenu;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.ImageLoader;
 import main.java.com.lordmau5.world.level.Level;
 import main.java.com.lordmau5.world.Tile;
 import main.java.com.lordmau5.world.tiles.WorldTile;
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Renderable;
-import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.*;
 
 /**
  * Created by Lordmau5 on 24.02.2015.
@@ -28,13 +26,16 @@ public class Player implements Entity {
     public static  Animation spinAnim;
     private Animation anim;
 
-    private int movement = 2;
     private boolean moving;
     public boolean holdingMove;
     private boolean spinning;
     private Direction spinDirection;
 
-    public Player() {
+    private GameMenu gameMenu;
+
+    public Player(GameMenu gameMenu) {
+        this.gameMenu = gameMenu;
+
         for (Direction dr : Direction.values()) {
             iFacing[dr.ordinal()] = new Animation(new SpriteSheet(ImageLoader.loadImage("player/" + dr.name().toLowerCase() + ".png"), 28, 32), 140);
         }
@@ -53,6 +54,14 @@ public class Player implements Entity {
         this.level = level;
         if(level.getStartPoint() != null)
             setPosition(level.getStartPoint());
+
+        facing = Direction.DOWN;
+        anim = iFacing[facing.ordinal()];
+        anim.setAutoUpdate(false);
+        moving = false;
+        holdingMove = false;
+        spinning = false;
+        walkTile = null;
     }
 
     private void setPosition(Tile tile) {
@@ -74,7 +83,7 @@ public class Player implements Entity {
         return tile.canPassThrough(this);
     }
 
-    public void move(Direction dr, int delta) {
+    public void move(Direction dr) {
         if(spinning)
             return;
 
@@ -135,6 +144,10 @@ public class Player implements Entity {
             y = pos[1] * 32;
 
             this.tile.setPosition(pos[0], pos[1]);
+            if(this.tile.equals(level.getEndPoint())) {
+                gameMenu.nextLevel();
+                return;
+            }
             stopMoving();
             level.doIntersections(this);
         }
@@ -162,6 +175,10 @@ public class Player implements Entity {
             y = pos[1] * 32;
 
             this.tile.setPosition(pos[0], pos[1]);
+            if(this.tile.equals(level.getEndPoint())) {
+                gameMenu.nextLevel();
+                return;
+            }
 
             // SET NEW TILE
             int mX = 0, mY = 0;
@@ -245,10 +262,6 @@ public class Player implements Entity {
         anim.setAutoUpdate(false);
     }
 
-    public Direction getFacing() {
-        return facing;
-    }
-
     @Override
     public boolean canPassThrough(Entity entity) {
         if(entity instanceof WorldTile)
@@ -262,6 +275,11 @@ public class Player implements Entity {
         if(spinning)
             return spinAnim;
         return anim;
+    }
+
+    @Override
+    public Image getImage() {
+        return null;
     }
 
     @Override

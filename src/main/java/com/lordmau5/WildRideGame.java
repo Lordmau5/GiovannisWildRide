@@ -12,8 +12,6 @@ import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Lordmau5 on 24.02.2015.
@@ -23,8 +21,6 @@ public class WildRideGame extends BasicGame {
     public List<LevelPack> levelPacks = new ArrayList<>();
 
     private AbstractMenu menu;
-    private Player player;
-    private Level level;
 
     private Mode mode = null;
 
@@ -50,10 +46,10 @@ public class WildRideGame extends BasicGame {
         this.menu = menu;
     }
 
-    private void saveDemoLVLPack() {
-        for(int j=1; j<=20; j++) {
+    private void saveDemoLVLPack(int max, int lvls) {
+        for(int j=1; j<=max; j++) {
             List<Level> levels = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < lvls; i++) {
                 Level level = new Level("Level" + i);
 
                 level.setStartPoint(4, 4);
@@ -86,7 +82,7 @@ public class WildRideGame extends BasicGame {
     @Override
     public void init(GameContainer gameContainer) throws SlickException {
         registerTiles();
-        player = new Player();
+        new Player(null);
         new Font();
 
         loader = new LevelpackLoader();
@@ -95,7 +91,7 @@ public class WildRideGame extends BasicGame {
 
         //Level level = new Level("Demo");
 
-        //saveDemoLVLPack();
+        //saveDemoLVLPack(1, 1);
         //LevelPack pack = LevelLoader.loadLevelPack("levels/LvlPack1.lvlpack");
         //player.setLevel(level);
     }
@@ -113,11 +109,8 @@ public class WildRideGame extends BasicGame {
             return;
         }
 
-        if(mode == Mode.GAME) {
-            movement(gameContainer, delta);
-            player.update();
-            otherInput(gameContainer, delta);
-        }
+        if(menu != null)
+            menu.update(gameContainer, delta);
     }
 
     @Override
@@ -134,15 +127,8 @@ public class WildRideGame extends BasicGame {
             return;
         }
 
-        if(mode == Mode.GAME) {
-            level.render(gameContainer, graphics);
-
-            int[] pos = player.getRelativePosition();
-            player.getRenderer().draw(pos[0] + 2, pos[1] - 4);
-        }
-        else if(mode == Mode.MENU) {
+        if(menu != null)
             menu.render(gameContainer, graphics);
-        }
     }
 
     @Override
@@ -160,7 +146,7 @@ public class WildRideGame extends BasicGame {
 
         if(mode != Mode.EDITOR)
             return;
-
+        /*
         x = (int) Math.floor(x / 32);
         y = (int) Math.floor(y / 32);
 
@@ -176,6 +162,7 @@ public class WildRideGame extends BasicGame {
                 spin.setDirection(Direction.values()[type]);
             }
         }
+        */
     }
 
     @Override
@@ -187,90 +174,4 @@ public class WildRideGame extends BasicGame {
     }
 
     //-----------------------------------------------------------------------------------------
-
-    void movement(GameContainer container, int delta) {
-        Input input = container.getInput();
-
-        Direction dr = null;
-
-        if(input.isKeyDown(Input.KEY_UP)) {
-            dr = Direction.UP;
-        }
-        else if(input.isKeyDown(Input.KEY_DOWN)) {
-            dr = Direction.DOWN;
-        }
-        else if(input.isKeyDown(Input.KEY_LEFT)) {
-            dr = Direction.LEFT;
-        }
-        else if(input.isKeyDown(Input.KEY_RIGHT)) {
-            dr = Direction.RIGHT;
-        }
-
-        if(dr == null) {
-            player.holdingMove = false;
-            return;
-        }
-
-        player.holdingMove = true;
-
-        if(player.isMoving())
-            return;
-
-        player.move(dr, delta);
-    }
-
-    void otherInput(GameContainer container, int delta) {
-        Input input = container.getInput();
-
-        if(input.isKeyPressed(Input.KEY_P)) {
-            if(fastMode) {
-                if(!canWork)
-                    return;
-
-                float pos = fastMusic.getPosition();
-                music.loop(1.0F, 0.1F);
-                music.setPosition(pos);
-                fastMode = false;
-            }
-            else {
-                if(!canWork)
-                    return;
-
-                canWork = false;
-                float pos = music.getPosition();
-                fastMusic.loop(1.0F, 0.1F);
-                fastMusic.setPosition(pos);
-                new Timer().schedule(new TimerTask() {
-                    int times = 50;
-
-                    @Override
-                    public void run() {
-                        float pos = fastMusic.getPosition();
-                        fastMusic.loop(1.0F + ((50 - times) * 0.01F), 0.1F);
-                        fastMusic.setPosition(pos);
-
-                        times--;
-                        if(times == 0) {
-                            this.cancel();
-                            canWork = true;
-                            fastMode = true;
-                        }
-                    }
-                }, 0, 20);
-            }
-        }
-        else if(input.isKeyPressed(Input.KEY_M)) {
-            if(fastMode)
-                if(fastMusic.playing())
-                    fastMusic.pause();
-                else
-                    fastMusic.pause();
-            else
-                if(music.playing())
-                    music.pause();
-                else
-                    music.pause();
-
-        }
-    }
 }

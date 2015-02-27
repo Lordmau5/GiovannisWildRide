@@ -37,11 +37,19 @@ public class LevelPack {
         return levels;
     }
 
+    public Level getFirstLevel() {
+        return levels.get(0).getCopy();
+    }
+
+    public Level resetLevel(int currentLevel) {
+        return levels.get(currentLevel).getCopy();
+    }
+
     public Level getNextLevel(int currentLevel) {
         if(currentLevel + 1 >= levels.size())
             return null;
 
-        return levels.get(currentLevel + 1);
+        return levels.get(currentLevel + 1).getCopy();
     }
 
     @Override

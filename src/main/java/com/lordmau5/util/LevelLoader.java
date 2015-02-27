@@ -78,18 +78,10 @@ public class LevelLoader {
             String currentLine = "";
             lines.add("Name:" + level.getLevelName());
 
-            int lineFull = 0;
             for(WorldTile tile : tiles) {
-                if(lineFull == 20) {
-                    lines.add(currentLine);
-                    currentLine = tile.getSaveString() + ";";
-                    lineFull = 0;
-                }
-                else {
-                    currentLine = currentLine + tile.getSaveString() + ";";
-                    lineFull++;
-                }
+                currentLine = currentLine + tile.getSaveString() + ";";
             }
+            lines.add(currentLine);
             int[] pos = level.getStartPoint().getAbsolutePosition();
             int[] endPos = level.getEndPoint().getAbsolutePosition();
             lines.add("StartEnd:" + pos[0] + "," + pos[1] + ";" + endPos[0] + "," + endPos[1] + ";");

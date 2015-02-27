@@ -29,6 +29,8 @@ public abstract class AbstractMenu {
 
     public abstract void render(GameContainer gameContainer, Graphics graphics);
 
+    public abstract void update(GameContainer gameContainer, int delta);
+
     public IButton getButton(int x, int y) {
         for(IButton button : buttons) {
             int[] pos = button.getPosition();

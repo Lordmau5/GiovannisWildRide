@@ -7,6 +7,7 @@ import main.java.com.lordmau5.world.Tile;
 import main.java.com.lordmau5.world.tiles.Spin;
 import main.java.com.lordmau5.world.tiles.Wall;
 import main.java.com.lordmau5.world.tiles.WorldTile;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class Level {
 
     private String levelName;
+    private List<WorldTile> backupTiles = new ArrayList<>();
     private List<WorldTile> worldTiles = new ArrayList<>();
     private Tile startPoint;
     private Tile endPoint;
@@ -49,6 +51,16 @@ public class Level {
         endPoint = new Tile(x, y);
     }
 
+    public Level getCopy() {
+        Level level = new Level(getLevelName());
+        level.setWorldTiles(getWorldTiles());
+        int[] pos = getStartPoint().getAbsolutePosition();
+        level.setStartPoint(pos[0], pos[1]);
+        pos = getEndPoint().getAbsolutePosition();
+        level.setEndPoint(pos[0], pos[1]);
+        return level;
+    }
+
     public WorldTile getWorldTileAt(int x, int y) {
         Tile tmpTile = new Tile(x, y);
         for(WorldTile tile : worldTiles) {
@@ -58,8 +70,11 @@ public class Level {
         return null;
     }
 
+    public void setWorldTiles(List<WorldTile> worldTiles) {
+        this.worldTiles = worldTiles;
+    }
     public List<WorldTile> getWorldTiles() {
-        return worldTiles;
+        return worldTiles.subList(0, worldTiles.size());
     }
 
     public void loadTileAt(String[] split) {
@@ -117,10 +132,12 @@ public class Level {
     }
 
     public void render(GameContainer gameContainer, Graphics graphics) {
+        int[] endPos = getEndPoint().getAbsolutePosition();
         for(WorldTile tile : worldTiles) {
             if(tile.getRenderer() != null) {
                 int[] pos = tile.getRelativePosition();
-                tile.getRenderer().draw(pos[0], pos[1]);
+                int[] abs = tile.getAbsolutePosition();
+                tile.getImage().draw(pos[0], pos[1], (abs[0] == endPos[0] && abs[1] == endPos[1]) ? Color.red : Color.white);
             }
         }
     }

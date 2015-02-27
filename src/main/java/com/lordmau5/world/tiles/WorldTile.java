@@ -14,6 +14,8 @@ public class WorldTile extends Tile implements Entity {
     }
 
     public Image getImage() {
+        if(getRenderer() instanceof Image)
+            return (Image) getRenderer();
         return null;
     }
 
