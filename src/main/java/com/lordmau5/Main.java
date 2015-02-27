@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 public class Main {
 
     public static WildRideGame game;
+    public static int width = 1024, height = 768;
 
     public static void main(String[] args) {
         initGLStuff();
@@ -19,7 +20,7 @@ public class Main {
         try {
             game = new WildRideGame();
             appGame = new AppGameContainer(game);
-            appGame.setDisplayMode(1024, 768, false);
+            appGame.setDisplayMode(width, height, false);
             appGame.setShowFPS(false);
             appGame.setVSync(true);
             appGame.setUpdateOnlyWhenVisible(true);

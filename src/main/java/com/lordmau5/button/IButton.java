@@ -1,13 +1,14 @@
 package main.java.com.lordmau5.button;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 
 /**
  * Created by Lordmau5 on 26.02.2015.
  */
 public interface IButton {
 
-    public int[] getPosition();
+    public float[] getPosition();
 
     public int getWidth();
 
@@ -21,6 +22,6 @@ public interface IButton {
 
     public void onHover(boolean isHover);
 
-    public void onClick(int button, boolean press);
+    public void render(Graphics graphics);
 
 }

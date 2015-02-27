@@ -38,14 +38,14 @@ public class MainMenu extends AbstractMenu {
 
     private void showMainMenu() {
         buttons.clear();
-        addCenteredButton(520, "Play");
-        addCenteredButton(580, "Level Editor");
-        addCenteredButton(640, "Options");
-        addCenteredButton(700, "Exit");
+        addCenteredButton(520, "Play", 1f);
+        addCenteredButton(580, "Level Editor", 1f);
+        addCenteredButton(640, "Options", 1f);
+        addCenteredButton(700, "Exit", 1f);
     }
 
-    public void addCenteredButton(int y, String text) {
-        buttons.add(new ClickableText(1024 / 2 - Font.getFont().getWidth(text) / 2, y, text, Font.getFont()));
+    public void addCenteredButton(int y, String text, float scale) {
+        buttons.add(new ClickableText(Font.getCenteredStartX(text, scale), y, text));
     }
 
     public void onMouseMove(int x, int y) {
@@ -97,7 +97,7 @@ public class MainMenu extends AbstractMenu {
 
                 graphics.scale(0.5f, 0.5f);
                 for(IButton button : buttons) {
-                    int[] pos = button.getPosition();
+                    float[] pos = button.getPosition();
                     Color color = button.getColor();
                     color.a = colorScale;
                     Font.getFont().drawString(pos[0], pos[1], button.getText(), color);

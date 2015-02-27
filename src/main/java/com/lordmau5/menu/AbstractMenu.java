@@ -18,7 +18,7 @@ public abstract class AbstractMenu {
 
     public void onMouseMove(int x, int y) {
         for(IButton button : buttons) {
-            int[] pos = button.getPosition();
+            float[] pos = button.getPosition();
             if(x >= pos[0] && x <= pos[0] + button.getWidth()
                     && y >= pos[1] && y <= pos[1] + button.getHeight())
                 button.onHover(true);
@@ -33,7 +33,7 @@ public abstract class AbstractMenu {
 
     public IButton getButton(int x, int y) {
         for(IButton button : buttons) {
-            int[] pos = button.getPosition();
+            float[] pos = button.getPosition();
             if(x >= pos[0] && x <= pos[0] + button.getWidth()
                     && y >= pos[1] && y <= pos[1] + button.getHeight())
                 return button;

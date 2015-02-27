@@ -30,7 +30,7 @@ public class Spin extends WorldTile {
 
         this.direction = direction;
 
-        setInitialState(new String[] {"Direction"}, new Object[] {direction});
+        getInitialState().setState("Direction", direction);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Spin extends WorldTile {
     @Override
     public void initiate(String[] variables) {
         setDirection(Direction.values()[Integer.parseInt(variables[3])]);
-        setInitialState(new String[] {"Direction"}, new Object[] {direction});
+        getInitialState().setState("Direction", direction);
     }
 
     @Override

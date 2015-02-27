@@ -31,11 +31,6 @@ public class GameMenu extends AbstractMenu {
         player.setLevel(this.level);
     }
 
-    public void setLevel(Level level) {
-        this.level = level.getCopy();
-        player.setLevel(level);
-    }
-
     public void resetLevel() {
         this.level = levelPack.resetLevel(currentLevelId);
         for(WorldTile tile : level.getWorldTiles())
@@ -94,13 +89,10 @@ public class GameMenu extends AbstractMenu {
         Input input = gameContainer.getInput();
         movement(input);
         player.update();
-
-        if(input.isKeyPressed(Input.KEY_R)) { // RESET
-            resetLevel();
-        }
+        otherInput(input);
     }
 
-    void movement(Input input) {
+    private void movement(Input input) {
         Direction dr = null;
 
         if(input.isKeyDown(Input.KEY_UP)) {
@@ -127,6 +119,15 @@ public class GameMenu extends AbstractMenu {
             return;
 
         player.move(dr);
+    }
+
+    private void otherInput(Input input) {
+        if(input.isKeyPressed(Input.KEY_R)) {
+            resetLevel();
+        }
+        else if(input.isKeyPressed(Input.KEY_ESCAPE)) {
+            Main.game.setMenu(new PauseMenu(this));
+        }
     }
 
     /*void otherInput(GameContainer container, int delta) {

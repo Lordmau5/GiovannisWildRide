@@ -2,6 +2,7 @@ package main.java.com.lordmau5.button;
 
 import main.java.com.lordmau5.util.ImageLoader;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 /**
@@ -10,11 +11,12 @@ import org.newdawn.slick.Image;
 public class ImageButton implements IButton {
 
     private String id;
-    private int x, y, w, h;
+    private float x, y;
+    private int w, h;
     private Image image;
     private Color color = Color.white;
 
-    public ImageButton(String id, int x, int y, int w, int h, String imagePath) {
+    public ImageButton(String id, float x, float y, int w, int h, String imagePath) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -35,8 +37,8 @@ public class ImageButton implements IButton {
     }
 
     @Override
-    public int[] getPosition() {
-        return new int[]{x, y};
+    public float[] getPosition() {
+        return new float[]{x, y};
     }
 
     @Override
@@ -60,8 +62,8 @@ public class ImageButton implements IButton {
     }
 
     @Override
-    public void onClick(int button, boolean press) {
-
+    public void render(Graphics graphics) {
+        graphics.drawImage(getImage(), x, y, getColor());
     }
 
     public Image getImage() {

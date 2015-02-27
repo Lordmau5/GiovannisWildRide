@@ -10,14 +10,10 @@ import org.newdawn.slick.Renderable;
  * Created by Lordmau5 on 25.02.2015.
  */
 public class WorldTile extends Tile implements Entity {
-    private InitialState initialState;
+    private InitialState initialState = new InitialState();
 
     public WorldTile(int x, int y) {
         super(x, y);
-    }
-
-    public void setInitialState(String[] stateNames, Object[] objects) {
-        initialState = new InitialState(stateNames, objects);
     }
 
     public InitialState getInitialState() {

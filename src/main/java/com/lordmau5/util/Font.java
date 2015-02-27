@@ -20,4 +20,9 @@ public class Font {
 
     public static AngelCodeFont getFont() { return font; }
 
+    public static float getCenteredStartX(String text, float scale) {
+        float width = Font.getFont().getWidth(text);
+        return 1024 / 2 / scale - width / 2;
+    }
+
 }

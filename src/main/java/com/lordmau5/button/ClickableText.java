@@ -1,38 +1,37 @@
 package main.java.com.lordmau5.button;
 
+import main.java.com.lordmau5.util.Font;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
+import org.newdawn.slick.Graphics;
 
 /**
  * Created by Lordmau5 on 26.02.2015.
  */
 public class ClickableText implements IButton {
 
-    private final int x, y;
+    protected final float x, y;
     private final String text;
     private Color color = Color.white;
-    private Font font;
 
-    public ClickableText(int x, int y, String text, Font font) {
+    public ClickableText(float x, float y, String text) {
         this.x = x;
         this.y = y;
         this.text = text;
-        this.font = font;
     }
 
     @Override
     public int getWidth() {
-        return font.getWidth(text);
+        return Font.getFont().getWidth(text);
     }
 
     @Override
     public int getHeight() {
-        return font.getHeight(text);
+        return Font.getFont().getHeight(text);
     }
 
     @Override
-    public int[] getPosition() {
-        return new int[]{x, y};
+    public float[] getPosition() {
+        return new float[]{x, y};
     }
 
     @Override
@@ -51,12 +50,13 @@ public class ClickableText implements IButton {
     }
 
     @Override
-    public void onClick(int button, boolean press) {
-
+    public void onHover(boolean isHover) {
+        color = isHover ? Color.cyan : Color.white;
     }
 
     @Override
-    public void onHover(boolean isHover) {
-        color = isHover ? Color.cyan : Color.white;
+    public void render(Graphics graphics) {
+        if(getText() != null && !getText().isEmpty())
+            Font.getFont().drawString(x, y, getText(), getColor());
     }
 }

@@ -33,7 +33,7 @@ public class LevelpackList extends AbstractMenu {
         if(levelPacks.size() > 0)
             selected = 0;
 
-        addButton(250, 700, "Play");
+        addButton(240, 700, "Play");
         addButton(700, 700, "Back");
 
         addImageButton("Up", 860, 650 - 96, 32, 32, "arrowUp.png");
@@ -110,23 +110,23 @@ public class LevelpackList extends AbstractMenu {
         Rectangle oldClip = graphics.getClip();
 
         graphics.scale(3 / 2f, 3 / 2f);
-        Font.getFont().drawString(Font.getFont().getWidth("Levelpacks"), 20, "Levelpacks");
+        Font.getFont().drawString(Font.getCenteredStartX("Levelpacks", 3 / 2f), 20, "Levelpacks");
         graphics.scale(2 / 3f, 2 / 3f);
 
         graphics.setColor(new Color(1f, 1f, 1f, 0.5f));
-        graphics.drawRect(200, 100, 650, 550);
+        graphics.drawRect(180, 100, 670, 550);
 
         for(int i=modifier; i<Math.min(levelPacks.size(), modifier + 9); i++) {
             Color color = mouseOverLevel(i) ? Color.cyan : (i == selected ? Color.green : Color.white);
             color.a = 0.5f;
             graphics.setColor(color);
-            graphics.fillRect(210, 110 + ((i - modifier) * 60), 630, 50);
+            graphics.fillRect(190, 110 + ((i - modifier) * 60), 650, 50);
 
             color.a = 1f;
             graphics.setColor(color);
             String name = levelPacks.get(i).getName();
-            graphics.setClip(210, 110 + ((i - modifier) * 60), 630, 50);
-            int xPos = 528 - Font.getFont().getWidth(name) / 2;
+            graphics.setClip(190, 110 + ((i - modifier) * 60), 650, 50);
+            float xPos = Font.getCenteredStartX(name, 1f);
             int maxX = 0;
             if(name.length() > 21) {
                 maxX = Font.getFont().getWidth(name.substring(13)) + 10;
@@ -151,7 +151,7 @@ public class LevelpackList extends AbstractMenu {
         }
 
         for(IButton button : buttons) {
-            int[] pos = button.getPosition();
+            float[] pos = button.getPosition();
             if(button.getText() != null)
                 Font.getFont().drawString(pos[0], pos[1], button.getText(), button.getColor());
 
@@ -168,7 +168,7 @@ public class LevelpackList extends AbstractMenu {
     }
 
     public void addButton(int x, int y, String text) {
-        buttons.add(new ClickableText(x, y, text, Font.getFont()));
+        buttons.add(new ClickableText(x, y, text));
     }
 
     public void addImageButton(String id, int x, int y, int w, int h, String imagePath) {
