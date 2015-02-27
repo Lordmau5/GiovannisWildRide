@@ -1,8 +1,10 @@
-package main.java.com.lordmau5.menu;
+package main.java.com.lordmau5.menu.editor;
 
 import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
+import main.java.com.lordmau5.menu.AbstractMenu;
+import main.java.com.lordmau5.menu.MainMenu;
 import main.java.com.lordmau5.util.Font;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
@@ -21,13 +23,8 @@ public class PreLevelEditorMenu extends AbstractMenu {
     }
 
     @Override
-    public void onMousePress(int buttonId, int x, int y, boolean press) {
-        if(buttonId != 0 || !press)
-            return;
-
-        IButton button = getButton(x, y);
-        if(button == null)
-            return;
+    public void onButtonLeftclick(IButton button) {
+        super.onButtonLeftclick(button);
 
         if(button.getIdentifier().equals("Back"))
             Main.game.setMenu(new MainMenu(true));
@@ -36,7 +33,7 @@ public class PreLevelEditorMenu extends AbstractMenu {
                 nameNotEmpty = 200;
                 return;
             }
-
+            Main.game.setMenu(new LevelEditorMenu(levelName));
         }
     }
 

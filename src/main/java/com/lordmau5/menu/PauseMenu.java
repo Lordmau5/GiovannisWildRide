@@ -23,13 +23,8 @@ public class PauseMenu extends AbstractMenu {
     }
 
     @Override
-    public void onMousePress(int buttonId, int x, int y, boolean press) {
-        if(buttonId != 0 || !press)
-            return;
-
-        IButton button = getButton(x, y);
-        if(button == null)
-            return;
+    public void onButtonLeftclick(IButton button) {
+        super.onButtonLeftclick(button);
 
         if(button.getIdentifier().equals("Exit Level")) {
             Main.game.setMenu(new LevelpackList());
@@ -51,16 +46,6 @@ public class PauseMenu extends AbstractMenu {
 
         for(IButton button : buttons) {
             button.render(graphics);
-            /*
-            float[] pos = button.getPosition();
-            if(button.getText() != null)
-                Font.getFont().drawString(pos[0], pos[1], button.getText(), button.getColor());
-
-            if(button instanceof ImageButton) {
-                ImageButton iButton = (ImageButton) button;
-                graphics.drawImage(iButton.getImage(), pos[0], pos[1], button.getColor());
-            }
-            */
         }
     }
 

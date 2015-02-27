@@ -6,7 +6,6 @@ import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.world.level.Level;
 import main.java.com.lordmau5.world.level.LevelPack;
-import main.java.com.lordmau5.world.tiles.Spin;
 import main.java.com.lordmau5.world.tiles.WorldTile;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -50,7 +49,7 @@ public class GameMenu extends AbstractMenu {
         }
     }
 
-    @Override
+    /*@Override
     public void onMousePress(int buttonId, int x, int y, boolean press) {
         if(buttonId != 0 || !press)
             return;
@@ -70,7 +69,7 @@ public class GameMenu extends AbstractMenu {
                 spin.setDirection(Direction.values()[type]);
             }
         }
-    }
+    }*/
 
     @Override
     public void onMouseMove(int x, int y) {

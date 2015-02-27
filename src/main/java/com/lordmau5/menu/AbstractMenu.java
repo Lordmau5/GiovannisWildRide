@@ -14,7 +14,15 @@ public abstract class AbstractMenu {
 
     public List<IButton> buttons = new ArrayList<>();
 
-    public abstract void onMousePress(int buttonId, int x, int y, boolean press);
+    public void onButtonLeftclick(IButton button) {
+
+    }
+
+    public void onMousePress(int buttonId, int x, int y, boolean press) {
+        IButton button = getButton(x, y);
+        if(button != null && buttonId == 0 && !press)
+            onButtonLeftclick(button);
+    }
 
     public void onMouseMove(int x, int y) {
         for(IButton button : buttons) {

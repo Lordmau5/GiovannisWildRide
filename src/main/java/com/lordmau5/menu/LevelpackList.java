@@ -39,23 +39,8 @@ public class LevelpackList extends AbstractMenu {
     }
 
     @Override
-    public void onMousePress(int buttonId, int x, int y, boolean press) {
-        if(buttonId != 0 || !press)
-            return;
-
-        if(x >= 200 && y >= 100 && x <= 840 && y <= 650) { // Clicking levels
-            int levelPackId = getMouseOverLevelPackId();
-            if(levelPackId == -1)
-                return;
-            System.out.println("LevelPack ID: " + levelPackId);
-            selected = levelPackId;
-            movingX = 0;
-            return;
-        }
-
-        IButton button = getButton(x, y);
-        if(button == null)
-            return;
+    public void onButtonLeftclick(IButton button) {
+        super.onButtonLeftclick(button);
 
         if(button.getIdentifier().equals("Back"))
             Main.game.setMenu(new MainMenu(true));
@@ -72,6 +57,21 @@ public class LevelpackList extends AbstractMenu {
             if(modifier == levelPacks.size() - 9)
                 return;
             modifier++;
+        }
+    }
+
+    @Override
+    public void onMousePress(int buttonId, int x, int y, boolean press) {
+        super.onMousePress(buttonId, x, y, press);
+
+        if(x >= 200 && y >= 100 && x <= 840 && y <= 650) { // Clicking levels
+            int levelPackId = getMouseOverLevelPackId();
+            if(levelPackId == -1)
+                return;
+            System.out.println("LevelPack ID: " + levelPackId);
+            selected = levelPackId;
+            movingX = 0;
+            return;
         }
     }
 

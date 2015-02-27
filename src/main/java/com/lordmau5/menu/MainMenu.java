@@ -4,6 +4,7 @@ import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.entity.Player;
+import main.java.com.lordmau5.menu.editor.PreLevelEditorMenu;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.Font;
 import main.java.com.lordmau5.world.tiles.Spin;
@@ -52,13 +53,9 @@ public class MainMenu extends AbstractMenu {
         super.onMouseMove(x, y);
     }
 
-    public void onMousePress(int buttonId, int x, int y, boolean press) {
-        if(buttonId != 0 || !press)
-            return;
-
-        IButton button = getButton(x, y);
-        if(button == null)
-            return;
+    @Override
+    public void onButtonLeftclick(IButton button) {
+        super.onButtonLeftclick(button);
 
         if (button.getIdentifier().equals("Exit")) {
             System.exit(0);
