@@ -3,6 +3,7 @@ package main.java.com.lordmau5.menu.editor;
 import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.util.Constants;
+import main.java.com.lordmau5.util.ImageLoader;
 import main.java.com.lordmau5.util.LevelLoader;
 import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.level.Level;
@@ -28,9 +29,15 @@ public class LevelEditorMenu extends AbstractMenu {
     private boolean menuShowing = true;
     private boolean menuRight = true;
 
+    private boolean gridShowing = true;
+    private Image grid;
+
+    private int mouseX, mouseY;
+
     private Input input;
 
     public LevelEditorMenu(String levelpackName) {
+        this.grid = ImageLoader.loadImage("tiles/grid.png");
         this.tileMap = TileRegistry.getTileMap();
 
         if(LevelLoader.doesLevelPackExist("levels/" + levelpackName + ".lvlPack")) {
@@ -140,6 +147,14 @@ public class LevelEditorMenu extends AbstractMenu {
     }
 
     @Override
+    public void onMouseMove(int x, int y) {
+        super.onMouseMove(x, y);
+
+        this.mouseX = x;
+        this.mouseY = y;
+    }
+
+    @Override
     public void onMouseDragged(int x, int y, int lastMouseButton) {
         super.onMouseDragged(x, y, lastMouseButton);
 
@@ -180,6 +195,28 @@ public class LevelEditorMenu extends AbstractMenu {
         }
     }
 
+    /*private void pickTile(int x, int y) {
+        x = (int) Math.floor(x / 32);
+        y = (int) Math.floor(y / 32);
+        WorldTile worldTile = null;
+        for(WorldTile xTile : currentLevel.getWorldTiles()) {
+            int[] pos = xTile.getAbsolutePosition();
+            if(x == pos[0] && y == pos[1]) {
+                worldTile = xTile;
+                break;
+            }
+        }
+        if(worldTile != null) {
+            for (int i = 0; i < tileMap.size(); i++) {
+                WorldTile xTile = tileMap.get(i);
+                if (worldTile.getInitialState().equals(xTile.getInitialState())) {
+                    selected = i;
+                    return;
+                }
+            }
+        }
+    }*/
+
     @Override
     public void onMousePress(int buttonId, int x, int y, boolean press) {
         super.onMousePress(buttonId, x, y, press);
@@ -195,12 +232,11 @@ public class LevelEditorMenu extends AbstractMenu {
             return;
         }
 
-        if(isInsideTileSelection(x, y))
-            if(buttonId == 2)
+        if(buttonId == 2) {
+            if (isInsideTileSelection(x, y))
                 selected = -1;
-
-        if(buttonId == 2)
             return;
+        }
 
         handleTileSelection(x, y);
 
@@ -238,6 +274,14 @@ public class LevelEditorMenu extends AbstractMenu {
         }
     }
 
+    private void drawGrid(Graphics graphics) {
+        if(gridShowing) {
+            int x = (int) Math.floor(mouseX / 32);
+            int y = (int) Math.floor(mouseY / 32);
+            graphics.drawImage(grid, x * 32, y * 32);
+        }
+    }
+
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
         for(WorldTile tile : currentLevel.getWorldTiles()) {
@@ -262,8 +306,9 @@ public class LevelEditorMenu extends AbstractMenu {
                 pos = pt.getRelativePosition();
                 pt.getImage().draw(pos[0], pos[1]);
             }
-
         }
+
+        drawGrid(graphics);
 
         if(menuShowing) {
             int menuX = menuRight ? Main.width - 194 : 8;
@@ -294,6 +339,9 @@ public class LevelEditorMenu extends AbstractMenu {
 
         if(input.isKeyPressed(Input.KEY_ESCAPE)) {
             Main.game.setMenu(new LevelEditorPauseMenu(this));
+        }
+        else if (input.isKeyPressed(Input.KEY_G)) {
+            gridShowing = !gridShowing;
         }
     }
 
