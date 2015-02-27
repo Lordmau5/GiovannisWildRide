@@ -2,6 +2,7 @@ package main.java.com.lordmau5.util;
 
 import main.java.com.lordmau5.world.level.Level;
 import main.java.com.lordmau5.world.level.LevelPack;
+import main.java.com.lordmau5.world.tiles.Floor;
 import main.java.com.lordmau5.world.tiles.WorldTile;
 
 import java.io.*;
@@ -79,7 +80,8 @@ public class LevelLoader {
             lines.add("Name:" + level.getLevelName());
 
             for(WorldTile tile : tiles) {
-                currentLine = currentLine + tile.getSaveString() + ";";
+                if(!(tile instanceof Floor))
+                    currentLine = currentLine + tile.getSaveString() + ";";
             }
             lines.add(currentLine);
             int[] pos = level.getStartPoint().getAbsolutePosition();

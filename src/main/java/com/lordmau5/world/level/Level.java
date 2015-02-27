@@ -4,6 +4,7 @@ import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.util.TileRegistry;
 import main.java.com.lordmau5.world.Tile;
+import main.java.com.lordmau5.world.tiles.Floor;
 import main.java.com.lordmau5.world.tiles.Spin;
 import main.java.com.lordmau5.world.tiles.Wall;
 import main.java.com.lordmau5.world.tiles.WorldTile;
@@ -20,13 +21,17 @@ import java.util.List;
 public class Level {
 
     private String levelName;
-    private List<WorldTile> backupTiles = new ArrayList<>();
     private List<WorldTile> worldTiles = new ArrayList<>();
     private Tile startPoint;
     private Tile endPoint;
 
     public Level(String levelName) {
         this.levelName = levelName;
+
+        for(int x=0; x<32; x++)
+            for(int y=0; y<24; y++) {
+                worldTiles.add(new Floor(x, y));
+            }
     }
 
     @Override

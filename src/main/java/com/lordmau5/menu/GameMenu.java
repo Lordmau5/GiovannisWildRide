@@ -44,8 +44,10 @@ public class GameMenu extends AbstractMenu {
         if(this.level == null) {
             Main.game.setMenu(new LevelpackList());
         }
-        else
+        else {
+            currentLevelId++;
             player.setLevel(this.level);
+        }
     }
 
     @Override
