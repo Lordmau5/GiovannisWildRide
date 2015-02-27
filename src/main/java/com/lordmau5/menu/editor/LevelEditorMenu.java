@@ -157,6 +157,9 @@ public class LevelEditorMenu extends AbstractMenu {
     public void onMouseDragged(int x, int y, int lastMouseButton) {
         super.onMouseDragged(x, y, lastMouseButton);
 
+        this.mouseX = x;
+        this.mouseY = y;
+
         if(lastMouseButton != 0)
             return;
 
@@ -224,8 +227,10 @@ public class LevelEditorMenu extends AbstractMenu {
             return;
 
         if(buttonId == 1) {
-            if(input.isKeyDown(Input.KEY_LSHIFT))
-                menuRight = !menuRight;
+            if(input.isKeyDown(Input.KEY_LSHIFT)) {
+                if(menuShowing)
+                    menuRight = !menuRight;
+            }
             else
                 menuShowing = !menuShowing;
             return;

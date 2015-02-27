@@ -49,6 +49,9 @@ public class MainMenu extends AbstractMenu {
     public void onButtonLeftclick(IButton button) {
         super.onButtonLeftclick(button);
 
+        if(colorScale < 1f)
+            return;
+
         if (button.getIdentifier().equals("Exit")) {
             System.exit(0);
         } else if (button.getIdentifier().equals("Play")) {

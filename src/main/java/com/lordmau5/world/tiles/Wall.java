@@ -15,17 +15,19 @@ public class Wall extends WorldTile {
 
     private int type;
     private List<Image> tiles = new ArrayList<>();
-    private static int wallAmount = 15;
+    private static int wallAmount = 19;
 
     public Wall(int x, int y) {
         super(x, y);
 
-        wallAmount = 0;
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tiles/wall.png"), 32, 32);
-        for(int iY=0; iY<3; iY++) // Rows
+        int rows = (int) Math.ceil(wallAmount / 5);
+        if(wallAmount / 5 % 5 > 0)
+            rows++;
+        for(int iY=0; iY<rows; iY++) // Rows
             for(int iX=0; iX<5; iX++) { // Images in Row
-                wallAmount++;
-                tiles.add(sheet.getSprite(iX, iY));
+                if(iY * 5 + iX < wallAmount)
+                    tiles.add(sheet.getSprite(iX, iY));
             }
     }
 

@@ -22,6 +22,7 @@ public class LevelEditorPauseMenu extends AbstractMenu {
         this.levelEditorMenu = levelEditorMenu;
 
         addCenteredGreyButton(250, "Set Level Name", 1f);
+        // TODO: Add function for changing the level-PACK name
         addCenteredGreyButton(350, "Switch to previous Level", 1f);
         addCenteredGreyButton(420, "Switch to next Level", 1f);
         addCenteredGreyButton(570, "Save Levelpack", 1f);
