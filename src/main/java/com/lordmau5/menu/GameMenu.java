@@ -1,7 +1,6 @@
 package main.java.com.lordmau5.menu;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.util.Direction;
 import main.java.com.lordmau5.world.level.Level;
@@ -185,10 +184,5 @@ public class GameMenu extends AbstractMenu {
 
         }
     }*/
-
-    @Override
-    public IButton getButton(int x, int y) {
-        return super.getButton(x, y);
-    }
 
 }

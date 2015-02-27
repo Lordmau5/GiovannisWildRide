@@ -1,6 +1,10 @@
 package main.java.com.lordmau5.menu;
 
+import main.java.com.lordmau5.button.ClickableText;
+import main.java.com.lordmau5.button.ClickableTextGrey;
 import main.java.com.lordmau5.button.IButton;
+import main.java.com.lordmau5.button.ImageButton;
+import main.java.com.lordmau5.util.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -53,6 +57,26 @@ public abstract class AbstractMenu {
                 return button;
         }
         return null;
+    }
+
+    public void addButton(float x, float y, String text) {
+        buttons.add(new ClickableText(x, y, text));
+    }
+
+    public void addGreyButton(float x, float y, String text) {
+        buttons.add(new ClickableTextGrey(x, y, text));
+    }
+
+    public void addCenteredButton(int y, String text, float scale) {
+        buttons.add(new ClickableText(Font.getCenteredStartX(text, scale), y, text));
+    }
+
+    public void addCenteredGreyButton(int y, String text, float scale) {
+        buttons.add(new ClickableTextGrey(Font.getCenteredStartX(text, scale), y, text));
+    }
+
+    public void addImageButton(String id, float x, float y, int w, int h, String imagePath) {
+        buttons.add(new ImageButton(id, x, y, w, h, imagePath));
     }
 
 }

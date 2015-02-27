@@ -3,6 +3,8 @@ package main.java.com.lordmau5.menu.editor;
 import main.java.com.lordmau5.Main;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.util.TileRegistry;
+import main.java.com.lordmau5.world.level.Level;
+import main.java.com.lordmau5.world.level.LevelPack;
 import main.java.com.lordmau5.world.tiles.Floor;
 import main.java.com.lordmau5.world.tiles.StartEndPoint;
 import main.java.com.lordmau5.world.tiles.WorldTile;
@@ -16,6 +18,9 @@ import java.util.List;
  */
 public class LevelEditorMenu extends AbstractMenu {
 
+    private final LevelPack levelPack;
+    private Level currentLevel;
+    private int levelId = 1;
     private final String levelpackName;
     private List<WorldTile> tilePositions = new ArrayList<>();
     private List<WorldTile> tileMap;
@@ -26,6 +31,9 @@ public class LevelEditorMenu extends AbstractMenu {
     private Input input;
 
     public LevelEditorMenu(String levelpackName) {
+        this.levelPack = new LevelPack(levelpackName);
+        this.currentLevel = new Level("NOT SET");
+        levelPack.addLevel(currentLevel);
         this.levelpackName = levelpackName;
         this.tileMap = TileRegistry.getTileMap();
 
@@ -33,6 +41,18 @@ public class LevelEditorMenu extends AbstractMenu {
             for(int y=0; y<24; y++) {
                 tilePositions.add(new Floor(x, y));
             }
+    }
+
+    public int getCurrentLevelId() {
+        return levelId;
+    }
+
+    public int getLevels() {
+        return levelPack.getLevels().size();
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
     }
 
     public String getLevelpackName() {

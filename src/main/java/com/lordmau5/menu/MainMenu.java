@@ -1,7 +1,6 @@
 package main.java.com.lordmau5.menu;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.entity.Player;
 import main.java.com.lordmau5.menu.editor.PreLevelEditorMenu;
@@ -40,10 +39,6 @@ public class MainMenu extends AbstractMenu {
         addCenteredButton(580, "Level Editor", 1f);
         addCenteredButton(640, "Options", 1f);
         addCenteredButton(700, "Exit", 1f);
-    }
-
-    public void addCenteredButton(int y, String text, float scale) {
-        buttons.add(new ClickableText(Font.getCenteredStartX(text, scale), y, text));
     }
 
     public void onMouseMove(int x, int y) {

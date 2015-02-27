@@ -1,7 +1,6 @@
 package main.java.com.lordmau5.menu.editor;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.menu.MainMenu;
@@ -122,9 +121,5 @@ public class PreLevelEditorMenu extends AbstractMenu {
     @Override
     public void update(GameContainer gameContainer, int delta) {
 
-    }
-
-    public void addButton(float x, float y, String text) {
-        buttons.add(new ClickableText(x, y, text));
     }
 }

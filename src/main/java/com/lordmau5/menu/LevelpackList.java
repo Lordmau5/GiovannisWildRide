@@ -1,7 +1,6 @@
 package main.java.com.lordmau5.menu;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.ClickableText;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.button.ImageButton;
 import main.java.com.lordmau5.util.Font;
@@ -163,14 +162,6 @@ public class LevelpackList extends AbstractMenu {
     @Override
     public void update(GameContainer gameContainer, int delta) {
 
-    }
-
-    public void addButton(float x, float y, String text) {
-        buttons.add(new ClickableText(x, y, text));
-    }
-
-    public void addImageButton(String id, float x, float y, int w, int h, String imagePath) {
-        buttons.add(new ImageButton(id, x, y, w, h, imagePath));
     }
 
 }

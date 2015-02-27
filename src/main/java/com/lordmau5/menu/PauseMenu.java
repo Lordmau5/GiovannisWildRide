@@ -1,7 +1,6 @@
 package main.java.com.lordmau5.menu;
 
 import main.java.com.lordmau5.Main;
-import main.java.com.lordmau5.button.ClickableTextGrey;
 import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.util.Font;
 import org.newdawn.slick.Color;
@@ -56,9 +55,5 @@ public class PauseMenu extends AbstractMenu {
         if(input.isKeyPressed(Input.KEY_ESCAPE)) {
             Main.game.setMenu(gameMenu);
         }
-    }
-
-    public void addButton(float x, float y, String text) {
-        buttons.add(new ClickableTextGrey(x, y, text));
     }
 }
