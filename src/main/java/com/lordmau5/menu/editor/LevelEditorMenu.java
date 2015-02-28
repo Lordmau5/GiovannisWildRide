@@ -23,7 +23,9 @@ public class LevelEditorMenu extends AbstractMenu {
     private final LevelPack levelPack;
     private Level currentLevel;
     private int levelId = 1;
-    private final String levelpackName;
+    private final String levelpackFilename;
+    private String oldLevelpackName;
+    private String levelpackName;
     private List<WorldTile> tileMap;
     private int selected = 0;
     private boolean menuShowing = true;
@@ -36,20 +38,23 @@ public class LevelEditorMenu extends AbstractMenu {
 
     private Input input;
 
-    public LevelEditorMenu(String levelpackName) {
+    public LevelEditorMenu(String levelpackFilename) {
+        this.levelpackFilename = levelpackFilename;
+        this.oldLevelpackName = levelpackFilename;
         this.grid = ImageLoader.loadImage("tiles/grid.png");
         this.tileMap = TileRegistry.getTileMap();
 
-        if(LevelLoader.doesLevelPackExist("levels/" + levelpackName + ".lvlPack")) {
-            this.levelPack = LevelLoader.loadLevelPack("levels/" + levelpackName + ".lvlPack");
+        if(LevelLoader.doesLevelPackExist("levels/" + levelpackFilename.toLowerCase() + ".lvlPack")) {
+            this.levelPack = LevelLoader.loadLevelPack("levels/" + levelpackFilename.toLowerCase() + ".lvlPack");
             this.levelpackName = this.levelPack.getName();
+            this.oldLevelpackName = this.levelpackName;
             this.currentLevel = this.levelPack.getFirstLevel();
         }
         else {
-            this.levelPack = new LevelPack(levelpackName);
+            this.levelPack = new LevelPack(levelpackFilename);
             this.currentLevel = new Level(Constants.NOT_SET);
             levelPack.addLevel(currentLevel);
-            this.levelpackName = levelpackName;
+            this.levelpackName = levelpackFilename;
 
             for(int x=0; x<32; x++)
                 for(int y=0; y<24; y++) {
@@ -93,12 +98,23 @@ public class LevelEditorMenu extends AbstractMenu {
 
     public boolean saveLevelpack() {
         for(Level level : levelPack.getLevels()) {
-            if(level.getStartPoint() == null || level.getEndPoint() == null)
+            if(level.getStartPoint() == null || level.getEndPoint() == null || level.getLevelName().equals(Constants.NOT_SET))
                 return false;
         }
-        LevelLoader.saveLevelPack(levelPack, "levels/" + levelpackName + ".lvlPack");
+        LevelLoader.saveLevelPack(levelPack, "levels/" + levelpackFilename + ".lvlPack");
         return true;
     }
+
+    public LevelPack getLevelPack() {
+        return levelPack;
+    }
+
+    public void setLevelpackName(String levelpackName) {
+        this.levelpackName = levelpackName;
+        this.levelPack.setName(levelpackName);
+    }
+
+    public String getOldLevelpackName() { return oldLevelpackName; }
 
     public String getLevelpackName() {
         return levelpackName;

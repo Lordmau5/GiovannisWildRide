@@ -15,7 +15,7 @@ public class Wall extends WorldTile {
 
     private int type;
     private List<Image> tiles = new ArrayList<>();
-    private static int wallAmount = 19;
+    private static int wallAmount = 23;
 
     public Wall(int x, int y) {
         super(x, y);

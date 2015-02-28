@@ -10,14 +10,14 @@ import org.newdawn.slick.geom.Rectangle;
 /**
  * Created by Lordmau5 on 27.02.2015.
  */
-public class LevelEditorSetLevelName extends AbstractMenu {
+public class LevelEditorSetLevelpackName extends AbstractMenu {
 
-    private String levelName;
+    private String levelpackName;
     private LevelEditorPauseMenu pauseMenu;
 
-    public LevelEditorSetLevelName(LevelEditorPauseMenu pauseMenu, String levelName) {
+    public LevelEditorSetLevelpackName(LevelEditorPauseMenu pauseMenu, String levelpackName) {
         this.pauseMenu = pauseMenu;
-        this.levelName = levelName;
+        this.levelpackName = levelpackName;
     }
 
     @Override
@@ -29,18 +29,18 @@ public class LevelEditorSetLevelName extends AbstractMenu {
         input.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(int i, char c) {
-                if (i == Input.KEY_BACK && !levelName.isEmpty()) {
-                    levelName = levelName.substring(0, levelName.length() - 1);
+                if (i == Input.KEY_BACK && !levelpackName.isEmpty()) {
+                    levelpackName = levelpackName.substring(0, levelpackName.length() - 1);
                     if (input.isKeyDown(Input.KEY_LCONTROL))
-                        levelName = "";
+                        levelpackName = "";
                     return;
                 }
 
-                if (levelName.length() == 32)
+                if (levelpackName.length() == 32)
                     return;
 
                 if(Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || Font.isSpecialChar(c))
-                    levelName = new StringBuilder(levelName).append(c).toString();
+                    levelpackName = new StringBuilder(levelpackName).append(c).toString();
             }
 
             @Override
@@ -77,7 +77,7 @@ public class LevelEditorSetLevelName extends AbstractMenu {
         graphics.setColor(new Color(0f, 0f, 0f, 0.25f));
         graphics.fillRect(0, 0, Main.width, Main.height);
 
-        String string = "Set Level Name:";
+        String string = "Set Levelpack Name:";
         int tWidth = Font.getFont().getWidth(string);
         float x = Font.getCenteredStartX(string, 1f);
         graphics.fillRect(x - 10, 150, tWidth + 20, 50);
@@ -98,10 +98,10 @@ public class LevelEditorSetLevelName extends AbstractMenu {
         graphics.drawRect(200, 200, 620, 50);
         graphics.setClip(210, 210, 600, 50);
         x = 210;
-        float width = Font.getFont().getWidth(levelName);
+        float width = Font.getFont().getWidth(levelpackName);
         if(width > 600)
             x -= (width - 600);
-        main.java.com.lordmau5.util.Font.getFont().drawString(x, 210, levelName);
+        Font.getFont().drawString(x, 210, levelpackName);
 
         graphics.setClip(oldClip);
     }
@@ -111,7 +111,7 @@ public class LevelEditorSetLevelName extends AbstractMenu {
         Input input = gameContainer.getInput();
 
         if(input.isKeyPressed(Input.KEY_ESCAPE)) {
-            pauseMenu.updateLevelName(levelName);
+            pauseMenu.updateLevelpackName(levelpackName);
             Main.game.setMenu(pauseMenu);
         }
     }

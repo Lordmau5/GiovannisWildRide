@@ -5,6 +5,7 @@ import main.java.com.lordmau5.button.IButton;
 import main.java.com.lordmau5.menu.AbstractMenu;
 import main.java.com.lordmau5.menu.MainMenu;
 import main.java.com.lordmau5.util.Font;
+import main.java.com.lordmau5.world.level.LevelPack;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -19,6 +20,21 @@ public class PreLevelEditorMenu extends AbstractMenu {
     public PreLevelEditorMenu() {
         addButton(820 - Font.getFont().getWidth("Back"), 650, "Back");
         addButton(200, 650, "Start Editing");
+    }
+
+    public PreLevelEditorMenu(String oldLevelpackName, LevelPack modifiedLevelPack) {
+        this();
+
+        if(modifiedLevelPack != null) {
+            if(!Main.game.levelPacks.isEmpty())
+                for(LevelPack pack : Main.game.levelPacks) {
+                    if (pack.getName().equals(oldLevelpackName)) {
+                        Main.game.levelPacks.remove(pack);
+                        break;
+                    }
+                }
+            Main.game.levelPacks.add(modifiedLevelPack);
+        }
     }
 
     @Override
@@ -93,7 +109,11 @@ public class PreLevelEditorMenu extends AbstractMenu {
         for(IButton button : buttons)
             button.render(graphics);
 
-        Font.getFont().drawString(Font.getCenteredStartX("Levelpack Name:", 1f), 350, "Levelpack Name:");
+        Font.getFont().drawString(Font.getCenteredStartX("Levelpack Filename:", 1f), 320, "Levelpack Filename:");
+
+        graphics.scale(2 / 3f, 2 / 3f);
+        Font.getFont().drawString(Font.getCenteredStartX("(Without the .lvlPack ending!)", 2 / 3f), 370 * (3 / 2f), "(Without the .lvlPack ending!)");
+        graphics.scale(3 / 2f, 3 / 2f);
 
         graphics.scale(2 / 3f, 2 / 3f);
         Font.getFont().drawString(Font.getCenteredStartX("(Just type using your keyboard)", 2 / 3f), 460 * (3 / 2f), "(Just type using your keyboard)");

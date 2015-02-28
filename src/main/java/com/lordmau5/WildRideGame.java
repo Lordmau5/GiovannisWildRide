@@ -103,7 +103,9 @@ public class WildRideGame extends BasicGame {
     public void update(GameContainer gameContainer, int delta) throws SlickException {
         if(levelsLoading) {
             LevelPack pack = loader.getNextLevelpack();
-            levelPacks.add(pack);
+            if(pack != null)
+                levelPacks.add(pack);
+
             if(loader.getRemaining() == 0) {
                 levelsLoading = false;
                 setMenu(new MainMenu(false));
@@ -125,6 +127,9 @@ public class WildRideGame extends BasicGame {
             Font.getFont().drawString(width - width / 8, 150, loading, Color.white);
             graphics.setColor(Color.cyan);
             graphics.drawRect(100, 200, 300, 20);
+            if(loader.getTotal() == 0)
+                return;
+
             width = 300 / loader.getTotal();
             graphics.fillRect(100, 200, width * (loader.getTotal() - loader.getRemaining()), 20);
             return;

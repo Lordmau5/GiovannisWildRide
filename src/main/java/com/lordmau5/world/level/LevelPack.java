@@ -20,6 +20,10 @@ public class LevelPack {
         this.levels = levels;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,6 +60,6 @@ public class LevelPack {
         if(!(obj instanceof LevelPack))
             return false;
         LevelPack oPack = (LevelPack) obj;
-        return oPack.getName().equals(getName()) && oPack.getLevels().equals(getLevels());
+        return oPack.getName().equals(getName());
     }
 }
