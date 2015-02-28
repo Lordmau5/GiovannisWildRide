@@ -1,6 +1,6 @@
 package com.lordmau5.giovanni.entity;
 
-import com.lordmau5.giovanni.menu.GameMenu;
+import com.lordmau5.giovanni.menu.INextLevelMenu;
 import com.lordmau5.giovanni.util.Direction;
 import com.lordmau5.giovanni.util.ImageLoader;
 import com.lordmau5.giovanni.world.Tile;
@@ -30,10 +30,10 @@ public class Player implements Entity {
     private boolean spinning;
     private Direction spinDirection;
 
-    private GameMenu gameMenu;
+    private INextLevelMenu nextLevelMenu;
 
-    public Player(GameMenu gameMenu) {
-        this.gameMenu = gameMenu;
+    public Player(INextLevelMenu nextLevelMenu) {
+        this.nextLevelMenu = nextLevelMenu;
 
         for (Direction dr : Direction.values()) {
             iFacing[dr.ordinal()] = new Animation(new SpriteSheet(ImageLoader.loadImage("player/" + dr.name().toLowerCase() + ".png"), 28, 32), 140);
@@ -49,18 +49,23 @@ public class Player implements Entity {
         anim.setAutoUpdate(false);
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
-        if (level.getStartPoint() != null)
-            setPosition(level.getStartPoint());
-
+    public void resetVars() {
         facing = Direction.DOWN;
         anim = iFacing[facing.ordinal()];
         anim.setAutoUpdate(false);
+        anim.setCurrentFrame(0);
         moving = false;
         holdingMove = false;
         spinning = false;
         walkTile = null;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+        if (level.getStartPoint() != null) {
+            setPosition(level.getStartPoint());
+        }
+        resetVars();
     }
 
     public void pause() {
@@ -71,7 +76,7 @@ public class Player implements Entity {
         anim.setAutoUpdate(isMoving());
     }
 
-    private void setPosition(Tile tile) {
+    public void setPosition(Tile tile) {
         this.tile = tile;
         int[] pos = tile.getAbsolutePosition();
         this.x = pos[0] * 32;
@@ -84,8 +89,12 @@ public class Player implements Entity {
 
     private boolean canWalkTo(int x, int y) {
         WorldTile tile = level.getWorldTileAt(x, y);
-        if (tile == null)
-            return true;
+        if (tile == null) {
+            if(x >= 0 && x < 32 && y >= 0 && y < 24)
+                return true;
+
+            return false;
+        }
 
         return tile.canPassThrough(this);
     }
@@ -153,7 +162,7 @@ public class Player implements Entity {
             this.lastTile = this.tile.copyTile();
             this.tile.setPosition(pos[0], pos[1]);
             if (this.tile.equals(level.getEndPoint())) {
-                gameMenu.nextLevel();
+                nextLevelMenu.nextLevel();
                 return;
             }
             stopMoving();
@@ -185,7 +194,7 @@ public class Player implements Entity {
             this.lastTile = this.tile.copyTile();
             this.tile.setPosition(pos[0], pos[1]);
             if (this.tile.equals(level.getEndPoint())) {
-                gameMenu.nextLevel();
+                nextLevelMenu.nextLevel();
                 return;
             }
 

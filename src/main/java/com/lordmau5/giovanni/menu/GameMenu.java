@@ -13,7 +13,7 @@ import org.newdawn.slick.Input;
 /**
  * Created by Lordmau5 on 27.02.2015.
  */
-public class GameMenu extends AbstractMenu {
+public class GameMenu extends AbstractMenu implements INextLevelMenu {
 
     private Player player;
     private LevelPack levelPack;
@@ -73,7 +73,7 @@ public class GameMenu extends AbstractMenu {
         otherInput(input);
     }
 
-    private void movement(Input input) {
+    public void movement(Input input) {
         Direction dr = null;
 
         if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W)) {
@@ -99,7 +99,7 @@ public class GameMenu extends AbstractMenu {
         player.move(dr);
     }
 
-    private void otherInput(Input input) {
+    public void otherInput(Input input) {
         if (input.isKeyPressed(Input.KEY_R)) {
             resetLevel();
         } else if (input.isKeyPressed(Input.KEY_ESCAPE)) {

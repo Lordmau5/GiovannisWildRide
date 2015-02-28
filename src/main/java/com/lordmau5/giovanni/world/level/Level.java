@@ -114,6 +114,16 @@ public class Level {
         replaceTileAt(pos[0], pos[1], newTile);
     }
 
+    public void removeTileAt(int x, int y) {
+        for (WorldTile tile : worldTiles) {
+            int[] pos = tile.getAbsolutePosition();
+            if (x == pos[0] && y == pos[1]) {
+                worldTiles.remove(tile);
+                return;
+            }
+        }
+    }
+
     public void replaceTileAt(int x, int y, WorldTile newTile) {
         Tile location = new Tile(x, y);
         if (!worldTiles.contains(location)) {

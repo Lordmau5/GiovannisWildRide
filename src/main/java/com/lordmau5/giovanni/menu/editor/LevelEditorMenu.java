@@ -32,6 +32,7 @@ public class LevelEditorMenu extends AbstractMenu {
     private boolean menuRight = true;
 
     private boolean gridShowing = true;
+    private Image floorImage;
     private Image grid;
 
     private int mouseX, mouseY;
@@ -41,6 +42,7 @@ public class LevelEditorMenu extends AbstractMenu {
     public LevelEditorMenu(String levelpackFilename) {
         this.levelpackFilename = levelpackFilename;
         this.oldLevelpackName = levelpackFilename;
+        this.floorImage = ImageLoader.loadImage("tiles/floor.png");
         this.grid = ImageLoader.loadImage("tiles/grid.png");
         this.tileMap = TileRegistry.getTileMap();
 
@@ -54,11 +56,6 @@ public class LevelEditorMenu extends AbstractMenu {
             this.currentLevel = new Level(Constants.NOT_SET);
             levelPack.addLevel(currentLevel);
             this.levelpackName = levelpackFilename;
-
-            for (int x = 0; x < 32; x++)
-                for (int y = 0; y < 24; y++) {
-                    currentLevel.replaceTileAt(x, y, Floor.class);
-                }
         }
     }
 
@@ -200,19 +197,22 @@ public class LevelEditorMenu extends AbstractMenu {
                     pt = currentLevel.getStartPoint();
                     if (pt != null) {
                         int[] pos = pt.getAbsolutePosition();
-                        currentLevel.replaceTileAt(pos[0], pos[1], Floor.class);
+                        currentLevel.removeTileAt(pos[0], pos[1]);
                     }
                     currentLevel.setStartPoint(tileX, tileY);
                 } else {
                     pt = currentLevel.getEndPoint();
                     if (pt != null) {
                         int[] pos = pt.getAbsolutePosition();
-                        currentLevel.replaceTileAt(pos[0], pos[1], Floor.class);
+                        currentLevel.removeTileAt(pos[0], pos[1]);
                     }
                     currentLevel.setEndPoint(tileX, tileY);
                 }
             } else {
-                currentLevel.replaceTileAt(tileX, tileY, worldTile);
+                if(worldTile instanceof Floor)
+                    currentLevel.removeTileAt(tileX, tileY);
+                else
+                    currentLevel.replaceTileAt(tileX, tileY, worldTile);
             }
         }
     }
@@ -278,19 +278,22 @@ public class LevelEditorMenu extends AbstractMenu {
                     pt = currentLevel.getStartPoint();
                     if (pt != null) {
                         int[] pos = pt.getAbsolutePosition();
-                        currentLevel.replaceTileAt(pos[0], pos[1], Floor.class);
+                        currentLevel.removeTileAt(pos[0], pos[1]);
                     }
                     currentLevel.setStartPoint(tileX, tileY);
                 } else {
                     pt = currentLevel.getEndPoint();
                     if (pt != null) {
                         int[] pos = pt.getAbsolutePosition();
-                        currentLevel.replaceTileAt(pos[0], pos[1], Floor.class);
+                        currentLevel.removeTileAt(pos[0], pos[1]);
                     }
                     currentLevel.setEndPoint(tileX, tileY);
                 }
             } else {
-                currentLevel.replaceTileAt(tileX, tileY, worldTile);
+                if(worldTile instanceof Floor)
+                    currentLevel.removeTileAt(tileX, tileY);
+                else
+                    currentLevel.replaceTileAt(tileX, tileY, worldTile);
             }
         }
     }
@@ -305,6 +308,11 @@ public class LevelEditorMenu extends AbstractMenu {
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
+        for(int x=0; x<32; x++)
+            for(int y=0; y<24; y++) {
+                graphics.drawImage(floorImage, x * 32, y * 32);
+            }
+
         for (WorldTile tile : currentLevel.getWorldTiles()) {
             if (tile == null || tile.getRenderer() == null)
                 continue;

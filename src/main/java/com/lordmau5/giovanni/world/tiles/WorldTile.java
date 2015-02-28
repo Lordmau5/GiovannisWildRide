@@ -11,13 +11,19 @@ import org.newdawn.slick.Renderable;
  * Created by Lordmau5 on 25.02.2015.
  */
 public class WorldTile extends Tile implements Entity {
-    private InitialState initialState = new InitialState();
+    private InitialState initialState;
 
     public WorldTile(int x, int y) {
         super(x, y);
     }
 
+    public void setInitialState(InitialState initialState) {
+        this.initialState = initialState;
+    }
+
     public InitialState getInitialState() {
+        if(initialState == null)
+            this.initialState = new InitialState();
         return initialState;
     }
 
@@ -28,7 +34,9 @@ public class WorldTile extends Tile implements Entity {
     }
 
     public WorldTile copyTile() {
-        return TileRegistry.createInstance(new Tile(x, y), getClass().getSimpleName());
+        WorldTile worldTile = TileRegistry.createInstance(new Tile(x, y), getClass().getSimpleName());
+        worldTile.setInitialState(worldTile.getInitialState());
+        return worldTile;
     }
 
     @Override

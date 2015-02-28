@@ -5,7 +5,9 @@ import com.lordmau5.giovanni.button.IButton;
 import com.lordmau5.giovanni.menu.AbstractMenu;
 import com.lordmau5.giovanni.menu.editor.sub.LevelEditorSetLevelName;
 import com.lordmau5.giovanni.menu.editor.sub.LevelEditorSetLevelpackName;
+import com.lordmau5.giovanni.menu.editor.sub.LevelEditorTestLevel;
 import com.lordmau5.giovanni.util.Font;
+import com.lordmau5.giovanni.world.level.Level;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -18,16 +20,18 @@ public class LevelEditorPauseMenu extends AbstractMenu {
 
     public final LevelEditorMenu levelEditorMenu;
     private int levelSaveInt;
+    private int testLevelInt;
 
     public LevelEditorPauseMenu(LevelEditorMenu levelEditorMenu) {
         this.levelEditorMenu = levelEditorMenu;
 
         addCenteredGreyButton(210, "Set Level Name", 1f);
         addCenteredGreyButton(260, "Set Levelpack Name", 1f);
-        addCenteredGreyButton(350, "Switch to previous Level", 1f);
-        addCenteredGreyButton(420, "Switch to next Level", 1f);
-        addCenteredGreyButton(570, "Save Levelpack", 1f);
-        addCenteredGreyButton(650, "Exit Editing", 1f);
+        addCenteredGreyButton(320, "Switch to previous Level", 1f);
+        addCenteredGreyButton(370, "Switch to next Level", 1f);
+        addCenteredGreyButton(470, "Test Level", 1f);
+        addCenteredGreyButton(620, "Save Levelpack", 1f);
+        addCenteredGreyButton(700, "Exit Editing", 1f);
     }
 
     public void updateLevelName(String levelName) {
@@ -54,6 +58,14 @@ public class LevelEditorPauseMenu extends AbstractMenu {
         }
         if (button.getIdentifier().equals("Switch to next Level")) {
             levelEditorMenu.switchLevel(levelEditorMenu.getCurrentLevelId() + 1);
+        }
+        if (button.getIdentifier().equals("Test Level")) {
+            Level level = levelEditorMenu.getCurrentLevel();
+            if(level.getStartPoint() == null || level.getEndPoint() == null) {
+                testLevelInt = 200;
+                return;
+            }
+            Main.game.setMenu(new LevelEditorTestLevel(this, level));
         }
         if (button.getIdentifier().equals("Save Levelpack")) {
             boolean canSave = levelEditorMenu.canSaveLevelpack();
@@ -106,8 +118,8 @@ public class LevelEditorPauseMenu extends AbstractMenu {
             String errorText = "One or more levels are corrupted!";
             tWidth = Font.getFont().getWidth(errorText);
             x = Font.getCenteredStartX(errorText, 2 / 3f);
-            graphics.fillRect(x - 10, 710, tWidth + 20, 50);
-            Font.getFont().drawString(x, 720, errorText, Color.red);
+            graphics.fillRect(x - 10, 810, tWidth + 20, 50);
+            Font.getFont().drawString(x, 820, errorText, Color.red);
             graphics.scale(3 / 2f, 3 / 2f);
             levelSaveInt++;
         } else if (levelSaveInt > 0) {
@@ -115,10 +127,19 @@ public class LevelEditorPauseMenu extends AbstractMenu {
             String errorText = "Levelpack successfully saved!";
             tWidth = Font.getFont().getWidth(errorText);
             x = Font.getCenteredStartX(errorText, 2 / 3f);
-            graphics.fillRect(x - 10, 710, tWidth + 20, 50);
-            Font.getFont().drawString(x, 720, errorText, Color.green);
+            graphics.fillRect(x - 10, 810, tWidth + 20, 50);
+            Font.getFont().drawString(x, 820, errorText, Color.green);
             graphics.scale(3 / 2f, 3 / 2f);
             levelSaveInt--;
+        } else if(testLevelInt > 0) {
+            graphics.scale(2 / 3f, 2 / 3f);
+            String errorText = "Level is missing start or end point!";
+            tWidth = Font.getFont().getWidth(errorText);
+            x = Font.getCenteredStartX(errorText, 2 / 3f);
+            graphics.fillRect(x - 10, 810, tWidth + 20, 50);
+            Font.getFont().drawString(x, 820, errorText, Color.red);
+            graphics.scale(3 / 2f, 3 / 2f);
+            testLevelInt--;
         }
 
         for (IButton button : buttons)

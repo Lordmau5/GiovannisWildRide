@@ -12,7 +12,7 @@ import org.newdawn.slick.SpriteSheet;
 /**
  * Created by Lordmau5 on 25.02.2015.
  */
-public class Spin extends com.lordmau5.giovanni.world.tiles.WorldTile {
+public class Spin extends WorldTile {
 
     private Direction direction = Direction.DOWN;
     private Image[] images = new Image[Direction.values().length];
@@ -34,8 +34,9 @@ public class Spin extends com.lordmau5.giovanni.world.tiles.WorldTile {
     }
 
     @Override
-    public com.lordmau5.giovanni.world.tiles.WorldTile copyTile() {
+    public WorldTile copyTile() {
         Spin spin = (Spin) super.copyTile();
+        getInitialState().setState("Direction", direction);
         spin.setDirection(direction);
         return spin;
     }

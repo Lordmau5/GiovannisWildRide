@@ -1,6 +1,5 @@
 package com.lordmau5.giovanni.world.tiles;
 
-import com.lordmau5.giovanni.world.tiles.WorldTile;
 import com.lordmau5.giovanni.util.ImageLoader;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Renderable;
