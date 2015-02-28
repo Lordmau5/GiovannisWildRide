@@ -106,6 +106,10 @@ public class LevelEditorMenu extends AbstractMenu {
         LevelLoader.saveLevelPack(levelPack, "levels/" + levelpackFilename + ".lvlPack");
     }
 
+    public String getLevelpackFilename() {
+        return levelpackFilename;
+    }
+
     public LevelPack getLevelPack() {
         return levelPack;
     }

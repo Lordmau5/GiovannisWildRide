@@ -198,6 +198,8 @@ public class Player implements Entity {
                 return;
             }
 
+            level.doIntersections(this);
+
             // SET NEW TILE
             int mX = 0, mY = 0;
 

@@ -7,6 +7,7 @@ import com.lordmau5.giovanni.menu.editor.sub.LevelEditorSetLevelName;
 import com.lordmau5.giovanni.menu.editor.sub.LevelEditorSetLevelpackName;
 import com.lordmau5.giovanni.menu.editor.sub.LevelEditorTestLevel;
 import com.lordmau5.giovanni.util.Font;
+import com.lordmau5.giovanni.util.LevelLoader;
 import com.lordmau5.giovanni.world.level.Level;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -78,7 +79,7 @@ public class LevelEditorPauseMenu extends AbstractMenu {
             }
         }
         if (button.getIdentifier().equals("Exit Editing"))
-            if(levelEditorMenu.canSaveLevelpack())
+            if(levelEditorMenu.canSaveLevelpack() && LevelLoader.doesLevelPackExist(levelEditorMenu.getLevelpackFilename()))
                 Main.game.setMenu(new PreLevelEditorMenu(levelEditorMenu.getOldLevelpackName(), levelEditorMenu.getLevelPack()));
             else
                 Main.game.setMenu(new PreLevelEditorMenu());
