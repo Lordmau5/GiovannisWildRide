@@ -1,6 +1,5 @@
 package com.lordmau5.giovanni.world.tiles;
 
-import com.lordmau5.giovanni.world.tiles.WorldTile;
 import com.lordmau5.giovanni.util.ImageLoader;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Renderable;
@@ -29,11 +28,6 @@ public class StartEndPoint extends WorldTile {
         this(x, y);
 
         this.isStart = isStart;
-        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("tiles/startEnd.png"), 32, 32);
-        for (int i = 0; i < 2; i++)
-            images[i] = sheet.getSprite(i, 0);
-
-        renderImage = ImageLoader.loadImage("tiles/floor.png");
     }
 
     public void setIsStart(boolean isStart) {

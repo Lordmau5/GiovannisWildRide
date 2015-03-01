@@ -20,12 +20,12 @@ public class Player implements Entity {
     public static Animation spinAnim;
     public Tile tile;
     public boolean holdingMove;
-    private int x, y;
+    public int x, y;
     private Tile lastTile;
     private Tile walkTile;
     private Level level;
     private Direction facing = Direction.DOWN;
-    private Animation anim;
+    public Animation anim;
     private boolean moving;
     private boolean spinning;
     private Direction spinDirection;

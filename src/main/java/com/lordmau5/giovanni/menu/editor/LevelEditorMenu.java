@@ -138,8 +138,8 @@ public class LevelEditorMenu extends AbstractMenu {
         if (!menuShowing)
             return false;
 
-        int startX = menuRight ? Main.width - 200 : 10;
-        if (x >= startX && x <= startX + 192) {
+        int startX = menuRight ? Main.width - 194 : 0;
+        if (x >= startX && x <= startX + 194) {
             return true;
         }
         return false;
@@ -344,7 +344,7 @@ public class LevelEditorMenu extends AbstractMenu {
         drawGrid(graphics);
 
         if (menuShowing) {
-            int menuX = menuRight ? Main.width - 194 : 8;
+            int menuX = menuRight ? Main.width - 194 : 0;
             graphics.setColor(new Color(1f, 1f, 1f, 0.75f));
             graphics.fillRect(menuX, 0, 194, Main.height);
 

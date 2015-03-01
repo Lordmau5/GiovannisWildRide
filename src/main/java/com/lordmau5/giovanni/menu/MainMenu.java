@@ -20,6 +20,7 @@ public class MainMenu extends AbstractMenu {
     private Spin spinUpIntro;
 
     public MainMenu(boolean showingFinished) {
+        Player.spinAnim.setSpeed(1f);
         spinUpIntro = new Spin(1, 1, Direction.UP);
 
         showMainMenu();

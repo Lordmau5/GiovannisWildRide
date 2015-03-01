@@ -30,7 +30,7 @@ public class Level {
         this.levelName = levelName;
 
         floorImage = ImageLoader.loadImage("tiles/floor.png");
-        endImage = new StartEndPoint(0, 0, false).getImage();
+        endImage = ImageLoader.loadImage("tiles/teleporter.png");
     }
 
     @Override
